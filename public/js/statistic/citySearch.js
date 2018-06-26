@@ -60,7 +60,6 @@ $(function() {
 			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			    }
 			});
-			console.log(value);
 			var parent_field = '';
 			var child_field = 'name4';
 			if(type == 1){
@@ -103,7 +102,10 @@ $(function() {
 						  a += '</option>';
 
 					  }
+
 					  $('.search-right .'+child_field).html(a);
+
+
 
 				  },
 				  dataType: 'json'

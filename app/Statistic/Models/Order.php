@@ -46,6 +46,7 @@ class Order extends Model{
         if(!empty($where)){
             $query->where($where);
         }
+        $query->groupBy('a.id');
         if($isPage){
             return $query->paginate($pageSize);
         }

@@ -123,6 +123,10 @@ body{
     width: auto;
     max-width: 110px;
 }
+.page-container .content-block-content table select.form-control {
+    width: auto;
+    max-width: 150px;
+}
 .page-container-bg-solid .page-bar, .page-content-white .page-bar{
 	margin: 0;
 }
