@@ -12,21 +12,48 @@ $(function() {
         		format: "yyyy-mm-dd",
         		language: "zh-CN"
 			});
-			// 初始化分页组件
-			initPagination("#userHzsPagination", 100, 20, 1);
+			$('#reStatisticsTime').datepicker({
+				autoclose: true,
+        		format: "yyyy-mm-dd",
+        		language: "zh-CN"
+			});
+
 		},
 		events: function(){
 			$("body").delegate("#reStatistics","click",function(){
 				//重新统计按钮事件，打开重新统计弹层
 				$("#reStatisticsTime").val("");
 				$("#reStatisticsPopup").removeClass("none");
+
 			}).delegate("#reStatisticsPopup .close-btn","click",function(){
 				//重新统计弹层关闭按钮事件，关闭重新统计弹层
 				$("#reStatisticsPopup").addClass("none");
 			}).delegate("#reStatisticsPopup #reCommitBtn","click",function(){
 				//重新统计弹层提交按钮事件，展示提示信息
 				$("#reStatisticsPopup").addClass("none");
-				showAlert('数据正在重新统计中...<br>24小时后统计结果才会刷新哦！');
+				showAlert('数据正在重新统计中...！');
+				$.ajaxSetup({
+				    headers: {
+				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    }
+				});
+				$.ajax({
+					  type: 'POST',
+					  url: '/statistic/user-cooperative/reset',
+					  data: {
+						  'time' : $("#reStatisticsTime").val()
+
+
+
+					  },
+					  success: function(json){
+
+							showAlert('统计成功');
+							window.location.reload();
+
+					  },
+					  dataType: 'json'
+				});
 			});
 		}
 	};

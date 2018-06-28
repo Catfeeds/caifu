@@ -144,5 +144,4 @@
     var name2 = "{{old('name2')}}";
     var name1 = "{{old('name1')}}";
     var name = "{{old('name')}}";
-
 </script>

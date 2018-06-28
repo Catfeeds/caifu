@@ -55,41 +55,35 @@
 					<tbody id="result_field">
 						@foreach($rows as $v)
 						<tr>
-							<td>{{$v->id}}</td>
+							<td>{{$v->user_id}}</td>
 							<td>{{$v->mobile}}</td>
 							<td>{{$v->username}}</td>
 							<td>{{App\Statistic\Models\Common::getSex($v->idcard_number)}}</td>
 							<td>{{App\Statistic\Models\Common::getAge($v->idcard_number)}}</td>
 							<td>{{date('Y-m-d H:i',$v->created_at)}}</td>
 							<td>
-							@if($v->status == 1)
-								@if($v->id == $v->president_id)
+								@if($v->club_user_id == $v->user_id)
     							社长
     							@else
     							社员
     							@endif
-							@endif
 							</td>
 							<td>
-								@if($v->status == 1)
+								@if($v->join_club_time)
 								{{date('Y-m-d H:i',$v->join_club_time)}}
 								@endif
 							</td>
 							<td>
-							@if($v->status == 1)
-								{{$v->club_id}}
-							@endif
+								{{$v->club_id?$v->club_id:''}}
 							</td>
 							<td>
-							@if($v->status == 1)
 								{{$v->club_name}}
-							@endif
 							</td>
-							<td>{{$v->name4}}</td>
-							<td>{{$v->name2}}</td>
-							<td>{{$v->name3}}</td>
-							<td>{{$v->name1}}</td>
-							<td>{{$v->project_name}}</td>
+							<td>{{$v->o_group}}</td>
+							<td>{{$v->department}}</td>
+							<td>{{$v->large_area}}</td>
+							<td>{{$v->area}}</td>
+							<td>{{$v->project}}</td>
 						</tr>
 						@endforeach
 					</tbody>

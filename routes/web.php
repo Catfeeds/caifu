@@ -27,3 +27,5 @@ Route::group(['prefix' => '/statistic/api'], function() {
 Route::get('/statistic/order/index','\App\Statistic\Controllers\OrderController@index');
 
 Route::any('/statistic/user-cooperative/index','\App\Statistic\Controllers\UserCooperativeController@index');
+
+Route::any('/statistic/user-cooperative/reset','\App\Statistic\Controllers\UserCooperativeController@reset');

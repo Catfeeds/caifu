@@ -30,11 +30,13 @@
 						class="table table-striped table-bordered table-advance table-hover">
 						<thead class="custom-thead">
 							<tr class="main-title">
-								<th colspan="12">订单状态</th>
+								<th colspan="11">订单状态</th>
 								<th colspan="4">投资人信息</th>
-								<th colspan="6">订单所属架构<a class="btn default">修改</a></th>
+								<th colspan="6">订单所属架构</th>
 								<th colspan="4">订单推荐人信息</th>
-								<th colspan="3">订单所属合作社</th>
+								<th colspan="2">订单所属合作社</th>
+								<th rowspan="2">操作</th>
+
 							</tr>
 							<tr>
 								<th>序号</th>
@@ -66,9 +68,9 @@
 								<th>合作社成立时间</th>
 							</tr>
 						</thead>
-						<tbody id="result_field">
+						<tbody id="result_field" class = 'order-edit-organize'>
 							@foreach($rows as $v)
-							<tr>
+							<tr id = "tr-{{$v->id}}">
 								<td>{{$v->id}}</td>
 								<td>{{App\Statistic\Models\Order::$getModelName[$v->model_name]}}</td>
 								<td>{{$v->sn}}</td>
@@ -84,11 +86,37 @@
 								<td>{{$v->mobile}}</td>
 								<td>{{App\Statistic\Models\Common::getSex($v->idcard_number)}}</td>
 								<td>{{App\Statistic\Models\Common::getAge($v->idcard_number)}}</td>
-								<td>{{$v->name4}}</td>
-								<td>{{$v->name3}}</td>
-								<td>{{$v->name2}}</td>
-								<td>{{$v->name1}}</td>
-								<td>{{$v->project_name}}</td>
+								<td>
+									<span>{{$v->name4}}</span>
+									<select class="form-control none name4" name = "name4"  data-id="{{$v->id}}">
+										<option value="">请选择集团</option>
+										<option value="彩生活服务集团">彩生活服务集团</option>
+									</select>
+								</td>
+								<td>
+									<span>{{$v->name3}}</span>
+									<select class="form-control none name3" name = "name3"  data-id="{{$v->id}}">
+
+									</select>
+								</td>
+								<td>
+									<span>{{$v->name2}}</span>
+									<select class="form-control none name2" name = "name2"  data-id="{{$v->id}}">
+
+									</select>
+								</td>
+								<td>
+									<span>{{$v->name1}}</span>
+									<select class="form-control none name1" name = "name1"  data-id="{{$v->id}}">
+
+									</select>
+								</td>
+								<td>
+									<span>{{$v->project_name}}</span>
+									<select class="form-control none name" name = "name">
+
+									</select>
+								</td>
 								<td>{{App\Statistic\Models\Order::getAddress($v->model_name,$v->sn)}}</td>
 								<td>{{$v->recommend_name}}</td>
 								<td>{{$v->recommend_mobile}}</td>
@@ -96,6 +124,10 @@
 								<td></td>
 								<td>{{$v->club_id}}</td>
 								<td>{{date('Y-m-d H:i',$v->created_at)}}</td>
+								<td>
+                                   <a class="btn orderEditBtn" data-id="{{$v->id}}">编辑</a>
+                                   <a class="btn orderSaveBtn none" data-id="{{$v->id}}">保存</a>
+                               </td>
 							</tr>
 							@endforeach
 						</tbody>
