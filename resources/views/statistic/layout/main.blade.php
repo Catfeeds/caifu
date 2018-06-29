@@ -99,7 +99,6 @@
         <script src="/assets/scripts/util.js" type="text/javascript"></script>
         <script src="/js/statistic/drawCharts.js" type="text/javascript"></script>
         <script src="/js/statistic/data.js" type="text/javascript"></script>
-        <script src="/js/statistic/kpiTarget.js" type="text/javascript"></script>
         @yield('js')
     </body>
 </html>

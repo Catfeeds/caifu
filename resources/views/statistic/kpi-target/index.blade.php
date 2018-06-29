@@ -2,6 +2,8 @@
 
 @section('js')
   <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
+  <script src="/js/statistic/kpiTarget.js?v=1" type="text/javascript"></script>
+
 @endsection
 
 @section('content')
