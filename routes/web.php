@@ -29,3 +29,9 @@ Route::get('/statistic/order/index','\App\Statistic\Controllers\OrderController@
 Route::any('/statistic/user-cooperative/index','\App\Statistic\Controllers\UserCooperativeController@index');
 
 Route::any('/statistic/user-cooperative/reset','\App\Statistic\Controllers\UserCooperativeController@reset');
+
+Route::get('/statistic/ribao/index','\App\Statistic\Controllers\RibaoController@index');
+Route::post('/statistic/ribao/reset','\App\Statistic\Controllers\RibaoController@reset');
+
+
+Route::post('/statistic/api/get-stat-daily','\App\Statistic\Controllers\ApiController@getStatDaily');

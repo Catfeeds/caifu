@@ -9,7 +9,7 @@
 		</a>
 			<ul class="sub-menu">
 				<li class="nav-item" id="nav-ribao"><a class="nav-link"
-					href="ribao.html"> <span class="title">统计表：日报</span>
+					href="/statistic/ribao/index"> <span class="title">统计表：日报</span>
 				</a></li>
 				<li class="nav-item" id="nav-userNewlyAdd"><a class="nav-link"
 					href="userNewlyAdd.html"> <span class="title">统计表：用户新增</span>

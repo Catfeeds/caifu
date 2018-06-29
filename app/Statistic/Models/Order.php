@@ -141,7 +141,45 @@ class Order extends Model{
         return $province.$city.$area.$community.$build.$room;
     }
 
+    /**
+     *
+     * @param integer $time 开始时间
+     * @return array|number 返回日报里的订单冲抵相关信息
+     */
+    public static function getOrderList($time){
+        $result = self::select(['created_at','investment_amount','model_name'])->where('created_at','>=',$time)->whereNotIn('status',[0,500,101])->get()->toArray();
+        $rows = [];
+        if(!empty($result)){
 
+            foreach ($result as $v){
+                if(!isset($rows[date('Y-m-d',$v['created_at'])])){
+                    $rows[date('Y-m-d',$v['created_at'])]['allAmount'] = 0;
+                    $rows[date('Y-m-d',$v['created_at'])]['allCount'] = 0;
+
+                    $rows[date('Y-m-d',$v['created_at'])]['advancePropertyAmount'] = 0;
+                    $rows[date('Y-m-d',$v['created_at'])]['advancePropertyCount'] = 0;
+                    $rows[date('Y-m-d',$v['created_at'])]['parkingAmount'] = 0;
+                    $rows[date('Y-m-d',$v['created_at'])]['parkingCount'] = 0;
+
+                }
+                $rows[date('Y-m-d',$v['created_at'])]['allAmount'] += $v['investment_amount'];//所有的资金端交易额集合
+                $rows[date('Y-m-d',$v['created_at'])]['allCount'] += 1;//所有单数
+
+                if($v['model_name'] == 'AdvanceProperty'){//冲抵物业宝
+                    $rows[date('Y-m-d',$v['created_at'])]['advancePropertyAmount'] += $v['investment_amount'];
+                    $rows[date('Y-m-d',$v['created_at'])]['advancePropertyCount'] += 1;
+
+                }else if($v['model_name'] == 'Parking'){//冲抵停车宝
+                    $rows[date('Y-m-d',$v['created_at'])]['parkingAmount'] += $v['investment_amount'];//投资金额
+                    $rows[date('Y-m-d',$v['created_at'])]['parkingCount'] += 1;
+
+                }
+
+
+            }
+        }
+        return $rows;
+    }
 
 
 
