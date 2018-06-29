@@ -72,19 +72,19 @@
 							<td>{{$v->area}}</td>
 							<td>{{$v->project}}</td>
 							<td>{{$v->year}}</td>
-							<td><span>{{$v->month01}}</span><input type="text" name = 'month01' value="{{$v->month01}}" class="form-control none" /></td>
-							<td><span>{{$v->month02}}</span><input type="text" name = 'month02' value="{{$v->month02}}" class="form-control none" /></td>
-							<td><span>{{$v->month03}}</span><input type="text" name = 'month03' value="{{$v->month03}}" class="form-control none" /></td>
-							<td><span>{{$v->month04}}</span><input type="text" name = 'month04' value="{{$v->month04}}" class="form-control none" /></td>
-							<td><span>{{$v->month05}}</span><input type="text" name = 'month05' value="{{$v->month05}}" class="form-control none" /></td>
-							<td><span>{{$v->month06}}</span><input type="text" name = 'month06' value="{{$v->month06}}" class="form-control none" /></td>
-							<td><span>{{$v->month07}}</span><input type="text" name = 'month07' value="{{$v->month07}}" class="form-control none" /></td>
-							<td><span>{{$v->month08}}</span><input type="text" name = 'month08' value="{{$v->month08}}" class="form-control none" /></td>
-							<td><span>{{$v->month09}}</span><input type="text" name = 'month09' value="{{$v->month09}}" class="form-control none" /></td>
-							<td><span>{{$v->month10}}</span><input type="text" name = 'month10' value="{{$v->month10}}" class="form-control none" /></td>
-							<td><span>{{$v->month11}}</span><input type="text" name = 'month11' value="{{$v->month11}}" class="form-control none" /></td>
-							<td><span>{{$v->month12}}</span><input type="text" name = 'month12' value="{{$v->month12}}" class="form-control none" /></td>
-							<td><span>{{$v->annual}}</span><input type="text"  name = 'annual' value="{{$v->annual}}" class="form-control none" /></td>
+							<td><span>{{$v->month01}}</span><input type="number" name = 'month01' value="{{$v->month01}}" class="form-control none" /></td>
+							<td><span>{{$v->month02}}</span><input type="number" name = 'month02' value="{{$v->month02}}" class="form-control none" /></td>
+							<td><span>{{$v->month03}}</span><input type="number" name = 'month03' value="{{$v->month03}}" class="form-control none" /></td>
+							<td><span>{{$v->month04}}</span><input type="number" name = 'month04' value="{{$v->month04}}" class="form-control none" /></td>
+							<td><span>{{$v->month05}}</span><input type="number" name = 'month05' value="{{$v->month05}}" class="form-control none" /></td>
+							<td><span>{{$v->month06}}</span><input type="number" name = 'month06' value="{{$v->month06}}" class="form-control none" /></td>
+							<td><span>{{$v->month07}}</span><input type="number" name = 'month07' value="{{$v->month07}}" class="form-control none" /></td>
+							<td><span>{{$v->month08}}</span><input type="number" name = 'month08' value="{{$v->month08}}" class="form-control none" /></td>
+							<td><span>{{$v->month09}}</span><input type="number" name = 'month09' value="{{$v->month09}}" class="form-control none" /></td>
+							<td><span>{{$v->month10}}</span><input type="number" name = 'month10' value="{{$v->month10}}" class="form-control none" /></td>
+							<td><span>{{$v->month11}}</span><input type="number" name = 'month11' value="{{$v->month11}}" class="form-control none" /></td>
+							<td><span>{{$v->month12}}</span><input type="number" name = 'month12' value="{{$v->month12}}" class="form-control none" /></td>
+							<td><span>{{$v->annual}}</span><input type="number"  name = 'annual' value="{{$v->annual}}" class="form-control none" /></td>
 							<td>
 								<a class="btn apiTargetEditBtn" data-id="{{$v->id}}">编辑</a>
                                 <a class="btn apiTargetSaveBtn none" data-id="{{$v->id}}">保存</a>

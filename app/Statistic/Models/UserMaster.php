@@ -91,8 +91,9 @@ class UserMaster extends Model{
         if(!empty($userId)){
             $query->whereIn('e.user_id',$userId);
         }
-        $query->whereNotIn('e.status',[0,500]);
+        $query->whereNotIn('e.status',[0,500,101]);
         $query->groupBy('e.user_id');
+        $query->orderBy('e.id');
         $result = $query->get()->toArray();
         if(!empty($result)){
             foreach ($result as $k => $v){

@@ -15,8 +15,8 @@ $(function() {
 			// 初始化分页组件
 			initPagination("#DqyhPagination", 100, 20, 1);
 			// 绘制地区用户页面图表
-			drawAreaTable("areaChart1",areaData);
-			drawAreaTable("areaChart2",areaData);
+			drawAreaTable("areaChart1",flushing);
+			drawAreaTable("areaChart2",president);
 		},
 		events: function(){
 			$("body").delegate("#reStatistics","click",function(){

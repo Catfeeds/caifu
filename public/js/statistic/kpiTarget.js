@@ -46,6 +46,12 @@ $(function() {
 				var month11 = $("#tr-" + id + " input[name='month11']").val();
 				var month12 = $("#tr-" + id + " input[name='month12']").val();
 				var annual = $("#tr-" + id + " input[name='annual']").val();
+				if(!month01 || !month02 || !month03 || !month04
+					|| !month05 || !month06 || !month07 || !month08 || !month09 || !month10 || !month11
+					|| !month12 || !annual){
+					alert('请填写完整的kpi目标');
+					return;
+				}
 				$.ajaxSetup({
 				    headers: {
 				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

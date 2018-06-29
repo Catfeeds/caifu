@@ -24,7 +24,7 @@
 					href="cooperative.html"> <span class="title">统计表：合作社</span>
 				</a></li>
 				<li class="nav-item" id="nav-areaUser"><a class="nav-link"
-					href="areaUser.html"> <span class="title">统计表：地区用户</span>
+					href="/statistic/area-user/index"> <span class="title">统计表：地区用户</span>
 				</a></li>
 				<li class="nav-item" id="nav-kpiTarget"><a class="nav-link"
 					href="/statistic/kpi-target/index"> <span class="title">原始表：KPI目标</span>

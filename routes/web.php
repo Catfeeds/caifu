@@ -35,3 +35,6 @@ Route::post('/statistic/ribao/reset','\App\Statistic\Controllers\RibaoController
 
 
 Route::post('/statistic/api/get-stat-daily','\App\Statistic\Controllers\ApiController@getStatDaily');
+
+
+Route::get('/statistic/area-user/index','\App\Statistic\Controllers\AreaUserController@index');
