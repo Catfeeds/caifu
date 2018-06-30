@@ -214,7 +214,7 @@ function drawGongxianTable(id, data){
 /*-----贡献率表格 E------*/
 
 /*-----地区用户表格 S------*/
-function drawAreaTable(id, data){
+function drawAreaTable(id, data,text){
 	if(!data || data.length <=0){
 		return;
 	}
@@ -246,7 +246,7 @@ function drawAreaTable(id, data){
         },
 	    series: [
 	        {
-	            name:'冲抵覆盖率（单位：%）',
+	            name:text,
 	            type:'bar',
 	            data:percentList
 	        }

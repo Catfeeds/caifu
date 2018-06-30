@@ -15,8 +15,8 @@ $(function() {
 			// 初始化分页组件
 			initPagination("#DqyhPagination", 100, 20, 1);
 			// 绘制地区用户页面图表
-			drawAreaTable("areaChart1",flushing);
-			drawAreaTable("areaChart2",president);
+			drawAreaTable("areaChart1",flushing,'冲抵覆盖率（单位：%）');
+			drawAreaTable("areaChart2",president,'社长覆盖率（单位：%）');
 		},
 		events: function(){
 			$("body").delegate("#reStatistics","click",function(){
