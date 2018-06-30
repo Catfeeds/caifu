@@ -1,6 +1,6 @@
 @extends('statistic.layout.main') @section('js')
 <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
-<script src="/js/statistic/areaUser.js" type="text/javascript"></script>
+<script src="/js/statistic/areaUser.js?v=11" type="text/javascript"></script>
 @endsection @section('content')
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">

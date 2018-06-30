@@ -97,7 +97,7 @@
         <script type="text/javascript" src="/assets/plugins/echart/walden.js"></script>
 		<!-- END THEME LAYOUT SCRIPTS -->
         <script src="/assets/scripts/util.js" type="text/javascript"></script>
-        <script src="/js/statistic/drawCharts.js" type="text/javascript"></script>
+        <script src="/js/statistic/drawCharts.js?v=11" type="text/javascript"></script>
         <script src="/js/statistic/data.js" type="text/javascript"></script>
         @yield('js')
     </body>
