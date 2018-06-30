@@ -180,7 +180,40 @@ class Order extends Model{
         }
         return $rows;
     }
+    /**
+     *
+     * @param integer $time 开始时间
+     * @return number[] 返回每天新增用户人数
+     */
+    public static function getUserAdd($time = null,$endTime = null)
+    {
+        $query = self::select('user_id', 'created_at');
 
+
+        if($endTime){
+            $query->where('created_at','<',$endTime);
+        }
+        $query->whereNotIn('status',[0,500,101]);
+        $query->groupBy('user_id');
+        $query->orderBy('created_at','asc');
+        $result = $query->get()->toArray();
+        $rows = [];
+        if(!empty($result)){
+
+            foreach ($result as $v){
+                $date = date('Y-m-d',$v['created_at']);
+                if($time && $v['created_at'] < $time){
+                    continue;
+                }
+                if(!isset($rows[$date])){
+                    $rows[$date] = 0;
+                }
+                $rows[$date] += 1;
+            }
+        }
+        return $rows ;
+
+    }
 
 
 }

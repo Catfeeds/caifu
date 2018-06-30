@@ -12,7 +12,7 @@
 					href="/statistic/ribao/index"> <span class="title">统计表：日报</span>
 				</a></li>
 				<li class="nav-item" id="nav-userNewlyAdd"><a class="nav-link"
-					href="userNewlyAdd.html"> <span class="title">统计表：用户新增</span>
+					href="/statistic/user-add/index"> <span class="title">统计表：用户新增</span>
 				</a></li>
 				<li class="nav-item" id="nav-kpiCompletion"><a class="nav-link"
 					href="kpiCompletion.html"> <span class="title">统计表：KPI完成情况</span>

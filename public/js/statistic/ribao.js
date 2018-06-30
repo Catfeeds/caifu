@@ -37,14 +37,15 @@ $(function() {
 				//重新统计弹层关闭按钮事件，关闭重新统计弹层
 				$("#reStatisticsPopup").addClass("none");
 			}).delegate("#reStatisticsPopup #reCommitBtn","click",function(){
-				//重新统计弹层提交按钮事件，展示提示信息
-				$("#reStatisticsPopup").addClass("none");
-				showAlert('数据正在重新统计中...');
 				var time = $('#reStatisticsTime').val();
 				if(!time){
 					alert('请选择时间');
 					return;
 				}
+				//重新统计弹层提交按钮事件，展示提示信息
+				$("#reStatisticsPopup").addClass("none");
+				showAlert('数据正在重新统计中...');
+				
 				$.ajax({
 				  type: 'POST',
 				  url: '/statistic/ribao/reset',

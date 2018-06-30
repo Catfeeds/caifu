@@ -32,7 +32,7 @@
 	<link href="/assets/plugins/layouts/css/custom.min.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
 	<link href="/assets/plugins/pagination/pagination.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 	<link href="/css/statistic/global.css" rel="stylesheet" type="text/css" />
 	<script src="/assets/plugins/jquery.min.js" type="text/javascript"></script>
 	@yield('css')
@@ -83,8 +83,8 @@
         </div>
         <!-- END CONTAINER -->
         <script src="/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-        <script src="/assets/plugins/bootstrap-datetimepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+        <script src="/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+        <script src="/assets/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
 		<!-- END CORE PLUGINS -->
 		<!-- BEGIN THEME GLOBAL SCRIPTS -->
 		<script src="/assets/scripts/app.min.js" type="text/javascript"></script>

@@ -38,3 +38,10 @@ Route::post('/statistic/api/get-stat-daily','\App\Statistic\Controllers\ApiContr
 
 
 Route::get('/statistic/area-user/index','\App\Statistic\Controllers\AreaUserController@index');
+
+Route::group(['prefix' => '/statistic/user-add'], function() {
+    Route::get('/index','\App\Statistic\Controllers\UserAddController@index');
+    Route::post('/search','\App\Statistic\Controllers\UserAddController@searchUserChart');
+    Route::any('/reset','\App\Statistic\Controllers\UserAddController@reset');
+
+});

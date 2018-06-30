@@ -29,6 +29,11 @@ $(function() {
 				//重新统计弹层关闭按钮事件，关闭重新统计弹层
 				$("#reStatisticsPopup").addClass("none");
 			}).delegate("#reStatisticsPopup #reCommitBtn","click",function(){
+				var beginTime = $('#reStatisticsTime').val();
+				if(!beginTime){
+					alert('请选择时间段');
+					return false;
+				}
 				//重新统计弹层提交按钮事件，展示提示信息
 				$("#reStatisticsPopup").addClass("none");
 				showAlert('数据正在重新统计中...！');
@@ -41,7 +46,7 @@ $(function() {
 					  type: 'POST',
 					  url: '/statistic/user-cooperative/reset',
 					  data: {
-						  'time' : $("#reStatisticsTime").val()
+						  'time' : beginTime
 
 
 

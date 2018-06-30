@@ -33,7 +33,10 @@ class UserMaster extends Model{
             }
             return $query->get();
     }
-
+    /**
+     *
+     * @param integer $time 开始时间
+     */
     public static function getUserList($time = []){
 
         $query = DB::table('user_master as a')->select(
