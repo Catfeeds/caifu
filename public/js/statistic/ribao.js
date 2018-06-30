@@ -12,20 +12,24 @@ $(function() {
 			$('#pageTab a[href="#ribao"]').trigger('click');
 			this.events();
 			// 初始化日期选择插件
-			$('.dateTimePicker').datepicker({
-				autoclose: true,
-        		format: "yyyy-mm-dd",
-        		language: "zh-CN"
+			$('.dateTimePicker').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        autoclose: true,
+		        startView: 2,
+		        minView:2,
+		        language:  'zh-CN',
 			});
 			this.getStatDaily();
 			$('body').on('click','.data-search',function(){
 				H.ribao.getStatDaily();
 
 			});
-			$('#reStatisticsTime').datepicker({
-				autoclose: true,
-        		format: "yyyy-mm-dd",
-        		language: "zh-CN"
+			$('#reStatisticsTime').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        autoclose: true,
+		        startView: 2,
+		        minView:2,
+		        language:  'zh-CN',
 			});
 		},
 		events: function(){

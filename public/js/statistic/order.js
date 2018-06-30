@@ -7,10 +7,12 @@ $(function() {
 			$('#pageTab a[href="#order"]').trigger('click');
 			this.events();
 			// 初始化日期选择插件
-			$('.dateTimePicker').datepicker({
-				autoclose: true,
-        		format: "yyyy-mm-dd",
-        		language: "zh-CN"
+			$('.dateTimePicker').datetimepicker({
+				format: 'yyyy-mm-dd',
+		        autoclose: true,
+		        startView: 2,
+		        minView:2,
+		        language:  'zh-CN',
 			});
 			$('.order-edit-organize .name4').on('change',function(){
 				$('.order-edit-organize .name3').val('');
