@@ -96,7 +96,6 @@
 				<div class="btn-group">
 					<input type='submit' class='btn blue' value="搜索"> <a
 						class="btn default">导出Excel</a> <a class="btn default">导入Excel</a>
-					<a class="btn default" id="reStatistics">重新统计</a>
 				</div>
 			</div>
 		</form>
