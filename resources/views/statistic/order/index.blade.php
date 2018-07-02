@@ -87,33 +87,33 @@
 								<td>{{App\Statistic\Models\Common::getSex($v->idcard_number)}}</td>
 								<td>{{App\Statistic\Models\Common::getAge($v->idcard_number)}}</td>
 								<td>
-									<span>{{$v->name4}}</span>
-									<select class="form-control none name4" name = "name4"  data-id="{{$v->id}}">
+									<span class = "o_group">{{$v->name4}}</span>
+									<select class="form-control none name4"   data-id="{{$v->id}}">
 										<option value="">请选择集团</option>
 										<option value="彩生活服务集团">彩生活服务集团</option>
 									</select>
 								</td>
 								<td>
-									<span>{{$v->name3}}</span>
-									<select class="form-control none name3" name = "name3"  data-id="{{$v->id}}">
+									<span class = "large_area">{{$v->name3}}</span>
+									<select class="form-control none name3"  data-id="{{$v->id}}">
 
 									</select>
 								</td>
 								<td>
-									<span>{{$v->name2}}</span>
-									<select class="form-control none name2" name = "name2"  data-id="{{$v->id}}">
+									<span class = "department">{{$v->name2}}</span>
+									<select class="form-control none name2"   data-id="{{$v->id}}">
 
 									</select>
 								</td>
 								<td>
-									<span>{{$v->name1}}</span>
-									<select class="form-control none name1" name = "name1"  data-id="{{$v->id}}">
+									<span class = 'area'>{{$v->name1}}</span>
+									<select class="form-control none name1"   data-id="{{$v->id}}">
 
 									</select>
 								</td>
 								<td>
-									<span>{{$v->project_name}}</span>
-									<select class="form-control none name" name = "name">
+									<span class = 'project'>{{$v->project_name}}</span>
+									<select class="form-control none name" data-id="{{$v->id}}">
 
 									</select>
 								</td>

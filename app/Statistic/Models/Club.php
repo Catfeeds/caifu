@@ -40,4 +40,6 @@ class Club extends Model{
     }
 
 
+
+
 }

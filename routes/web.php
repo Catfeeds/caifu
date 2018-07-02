@@ -25,6 +25,8 @@ Route::group(['prefix' => '/statistic/api'], function() {
     Route::post('/get-organize','\App\Statistic\Controllers\ApiController@getOrganize');
 });
 Route::get('/statistic/order/index','\App\Statistic\Controllers\OrderController@index');
+Route::post('/statistic/order/edit-organize','\App\Statistic\Controllers\OrderController@editOrganize');
+
 
 Route::any('/statistic/user-cooperative/index','\App\Statistic\Controllers\UserCooperativeController@index');
 
@@ -45,3 +47,9 @@ Route::group(['prefix' => '/statistic/user-add'], function() {
     Route::any('/reset','\App\Statistic\Controllers\UserAddController@reset');
 
 });
+
+    Route::group(['prefix' => '/statistic/cooperative'], function() {
+        Route::get('/index','\App\Statistic\Controllers\CooperativeController@index');
+        Route::get('/reset','\App\Statistic\Controllers\CooperativeController@reset');
+
+    });

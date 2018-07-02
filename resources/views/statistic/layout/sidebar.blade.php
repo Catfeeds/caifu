@@ -21,7 +21,7 @@
 					href="kpiContribution.html"> <span class="title">统计表：地区KPI贡献率</span>
 				</a></li>
 				<li class="nav-item" id="nav-cooperative"><a class="nav-link"
-					href="cooperative.html"> <span class="title">统计表：合作社</span>
+					href="/statistic/cooperative/index"> <span class="title">统计表：合作社</span>
 				</a></li>
 				<li class="nav-item" id="nav-areaUser"><a class="nav-link"
 					href="/statistic/area-user/index"> <span class="title">统计表：地区用户</span>

@@ -215,5 +215,9 @@ class Order extends Model{
 
     }
 
+    public static function updateInfoById($data){
+        DB::table('order_master')->update($data);
+    }
+
 
 }

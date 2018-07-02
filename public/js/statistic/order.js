@@ -3,6 +3,11 @@ $(function() {
 		init: function(){
 			// 选中左侧某个菜单
 			selectLeftNode('nav-order');
+			$.ajaxSetup({
+			    headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    }
+			});
 			// 选中上方某个tab
 			$('#pageTab a[href="#order"]').trigger('click');
 			this.events();
@@ -56,6 +61,7 @@ $(function() {
 				var id = $(this).attr('data-id');
 				H.order.getCity(4,val,'',id);
 			});
+
 		},
 		events: function(){
 			$("body").delegate("#reStatistics","click",function(){
@@ -76,20 +82,77 @@ $(function() {
 				$("#tr-" + id + " .orderSaveBtn").removeClass('none');
 
 				$(this).addClass("none");
+				var o_group = $("#tr-" + id + " .o_group").text();
+				var large_area = $("#tr-" + id + " .large_area").text();
+				var department = $("#tr-" + id + " .department").text();
+				var area = $("#tr-" + id + " .area").text();
+				var project = $("#tr-" + id + " .project").text();
+
+				H.order.getCity(0,'',o_group,id);
+				if(o_group){
+					H.order.getCity(1,o_group,large_area,id);
+				}
+
+				if(large_area){
+					H.order.getCity(2,large_area,department,id);
+				}
+				if(department){
+					H.order.getCity(3,department,area,id);
+				}
+				if(area){
+					H.order.getCity(4,area,project,id);
+				}
 			}).delegate('.orderSaveBtn', 'click', function(event) {
 				let id = $(this).attr("data-id");
-				$("#tr-" + id + " select").addClass("none");
-				$("#tr-" + id + " span").removeClass("none");
-				$("#tr-" + id + " .orderEditBtn").removeClass('none');
-				$(this).addClass("none");
+
+				var o_group = $("#tr-" + id + " .name4").val();
+				var large_area = $("#tr-" + id + " .name3").val();
+				var department = $("#tr-" + id + " .name2").val();
+				var area = $("#tr-" + id + " .name1").val();
+				var project = $("#tr-" + id + " .name").val();
+				if(!o_group || !large_area || !department ||!area || !project){
+					alert('请选择完组织架构信息');
+					return false;
+				}
+				$.ajax({
+				  type: 'POST',
+				  url: '/statistic/order/edit-organize',
+				  data: {
+
+				  		'o_group' : o_group,
+				  		'large_area' : large_area,
+				  		'department' : department,
+				  		'area' : area,
+				  		'project' : project,
+				  		'id' : id	
+
+
+				  },
+				  success: function(json){
+
+					  
+				  		if(json.errcode == 0){
+				  			$("#tr-" + id + " select").addClass("none");
+							$("#tr-" + id + " span").removeClass("none");
+							$("#tr-" + id + " .orderEditBtn").removeClass('none');
+							$("#tr-" + id + " .orderSaveBtn").addClass("none");
+							alert('操作成功');
+							window.location.reload();
+				  		}else{
+				  			alert(json.msg);
+				  		}
+					 	
+
+
+				  },
+				  dataType: 'json'
+			});
+
+
 			});
 		},
 		getCity: function(type,value,childValue,currentId){
-			$.ajaxSetup({
-			    headers: {
-			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    }
-			});
+
 			var parent_field = '';
 			var child_field = 'name4';
 			if(type == 1){

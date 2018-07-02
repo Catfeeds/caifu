@@ -87,6 +87,7 @@ $(function() {
 						  $("#tr-" + id + " .apiTargetSaveBtn").addClass("none");
 						  if(json.errcode == 0){
 							  alert('操作成功');
+							  window.location.reload();
 						  }else{
 							  alert(json.msg);
 						  }

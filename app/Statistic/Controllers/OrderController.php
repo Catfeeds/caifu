@@ -4,6 +4,8 @@ namespace App\Statistic\Controllers;
 
 use Illuminate\Http\Request;
 use App\Statistic\Models\Order;
+use App\Statistic\Models\Common;
+use App\Statistic\Models\Organize;
 
 class OrderController extends Controller{
 
@@ -69,5 +71,32 @@ class OrderController extends Controller{
         return view('/statistic/order/index',['rows' => $rows,'orderStatus' => Order::$getStatus,'productType' => Order::$getModelName]);
     }
 
+
+    public function editOrganize(Request $request){
+
+        $o_group = $request->o_group;
+        $large_area = $request->large_area;
+        $department = $request->department;
+        $area = $request->area;
+        $project = $request->project;
+        $id = $request->id;
+        if(!$o_group || !$large_area || !$department || !$area || !$project || !$id){
+            return Common::jsonResponse(-1,'参数缺失');
+        }
+        $model = Order::find($id);
+        if(empty($model)){
+            return Common::jsonResponse(1404,'该记录不存在');
+        }
+        $result = Organize::select(['uuid'])->where(['name3' => $large_area,'name2' => $department,'name1' => $area,'name' => $project])->get()->toArray();
+        if(empty($result)){
+            return Common::jsonResponse(-1,'该组织架构不存在');
+        }
+        $model->community_code = $result[0]['uuid'];
+        $res = $model->save();
+        if($res){
+            return Common::jsonResponse();
+        }
+        return Common::jsonResponse(-1,'系统错误');
+    }
 
 }
