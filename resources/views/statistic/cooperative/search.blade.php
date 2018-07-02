@@ -55,7 +55,7 @@
 						</div>
 					</div>
 					<div class="search-item">
-						<label class="control-label">在投金额</label>
+						<label class="control-label">在投金额（元）</label>
 						<div class="search-right">
 							<div class="search-inline">
 								<input type="text" value = "{{old('investment_fee_begin')}}" name = 'investment_fee_begin' class="form-control" placeholder="请输入金额">
