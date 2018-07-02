@@ -83,7 +83,7 @@
 					<div class="search-item">
 						<label class="control-label">社名</label>
 						<div class="search-right">
-							<input type="text" name = 'name' class="form-control" value="{{old('name')}}" placeholder="">
+							<input type="text" name = 'club_name' class="form-control" value="{{old('club_name')}}" placeholder="">
 						</div>
 					</div>
 					<div class="search-item">
