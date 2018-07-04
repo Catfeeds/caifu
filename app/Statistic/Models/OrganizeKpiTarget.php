@@ -37,4 +37,15 @@ class OrganizeKpiTarget extends Model{
         2013 => '2013',
     ];
 
+    public static function getListKpi($where){
+
+       $result = self::select([
+            'large_area','department','area','project',
+            'month01','month02','month03','month04','month05','month06',
+            'month07','month08','month09','month10','month11','month12',
+            'annual'
+
+        ])->where($where)->get()->toArray();
+       return $result;
+    }
 }

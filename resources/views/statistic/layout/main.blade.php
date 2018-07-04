@@ -34,6 +34,7 @@
 	<link href="/assets/plugins/pagination/pagination.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 	<link href="/css/statistic/global.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/plugins/artDialog/css/ui-dialog.css" rel="stylesheet" type="text/css" />
 	<script src="/assets/plugins/jquery.min.js" type="text/javascript"></script>
 	@yield('css')
 
@@ -99,6 +100,10 @@
         <script src="/assets/scripts/util.js" type="text/javascript"></script>
         <script src="/js/statistic/drawCharts.js?v=11" type="text/javascript"></script>
         <script src="/js/statistic/data.js" type="text/javascript"></script>
+        <script type="text/javascript" src="/assets/plugins/artDialog/dialog-min.js"></script>
+
+        <script type="text/javascript" src="/assets/plugins/artDialog/alert-msg.js"></script>
+
         @yield('js')
     </body>
 </html>

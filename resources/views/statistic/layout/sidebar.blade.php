@@ -15,10 +15,10 @@
 					href="/statistic/user-add/index"> <span class="title">统计表：用户新增</span>
 				</a></li>
 				<li class="nav-item" id="nav-kpiCompletion"><a class="nav-link"
-					href="kpiCompletion.html"> <span class="title">统计表：KPI完成情况</span>
+					href="/statistic/kpi-complete/index"> <span class="title">统计表：KPI完成情况</span>
 				</a></li>
 				<li class="nav-item" id="nav-kpiContribution"><a class="nav-link"
-					href="kpiContribution.html"> <span class="title">统计表：地区KPI贡献率</span>
+					href="/statistic/kpi-contribution/index"> <span class="title">统计表：地区KPI贡献率</span>
 				</a></li>
 				<li class="nav-item" id="nav-cooperative"><a class="nav-link"
 					href="/statistic/cooperative/index"> <span class="title">统计表：合作社</span>

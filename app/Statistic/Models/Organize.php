@@ -43,6 +43,33 @@ class Organize extends Model{
         return $result;
 
     }
+    /**
+     *
+     * @param string $fields 查询字段
+     * @param array $where 查询条件
+     * @param string $groupField 组合字段
+     * @param string $isPage
+     * @param number $pageSize
+     * @return 返回kpi完成表的列表信息
+     */
+    public static function getRowsKpiComplete($fields = '*',$where = [],$groupField = 'name3',$gmvWhere = [],$isPage = true,$pageSize = 20){
+
+
+        $query = self::select($fields);
+        if(!empty($where)){
+            $query->where($where);
+        }
+        if(!empty($gmvWhere)){
+            $query->whereIn($gmvWhere[0],$gmvWhere[1]);
+        }
+        $query->groupBy($groupField);
+        if($isPage){
+            return $query->paginate($pageSize);
+        }
+        return $query->get();
+    }
+
+
 
 
 }

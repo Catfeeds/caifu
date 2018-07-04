@@ -48,8 +48,12 @@ Route::group(['prefix' => '/statistic/user-add'], function() {
 
 });
 
-    Route::group(['prefix' => '/statistic/cooperative'], function() {
-        Route::get('/index','\App\Statistic\Controllers\CooperativeController@index');
-        Route::get('/reset','\App\Statistic\Controllers\CooperativeController@reset');
+Route::group(['prefix' => '/statistic/cooperative'], function() {
+    Route::get('/index','\App\Statistic\Controllers\CooperativeController@index');
+    Route::get('/reset','\App\Statistic\Controllers\CooperativeController@reset');
+});
 
-    });
+
+    Route::get('/statistic/kpi-complete/index','\App\Statistic\Controllers\KpiCompleteController@index');
+    Route::get('/statistic/kpi-contribution/index','\App\Statistic\Controllers\KpiContributionController@index');
+

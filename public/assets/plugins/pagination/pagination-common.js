@@ -37,6 +37,13 @@ function initPagination(domId, num_entries, eachPageSize, prePage) {
 
 // 分页回调函数
 function pageselectCallback(page_index, jq) {
-	// loadEachPageItemInfo(page_index + 1);
-	return false;
+	var pageNum = $("#pageNum").val();
+	var nextNum = (page_index+1);
+	if(pageNum == ''){		
+		return;
+	}
+	if(nextNum != pageNum){
+		$("#pageNum").val(nextNum);
+		$("#queryForm").submit();
+	}
 }

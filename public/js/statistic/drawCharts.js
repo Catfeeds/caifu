@@ -11,7 +11,7 @@ function drawKpiTable(id, time, area, data){
 		timeList.push(data[i].time);
 		kpiList.push(data[i].kpi);
 		sumList.push(data[i].sum);
-		percentList.push((data[i].kpi/data[i].sum).toFixed(2) * 100);
+		percentList.push(((data[i].sum/data[i].kpi).toFixed(4) * 100).toFixed(2));
 	}
 	var option = {
 	    tooltip: {
@@ -214,7 +214,7 @@ function drawGongxianTable(id, data){
 /*-----贡献率表格 E------*/
 
 /*-----地区用户表格 S------*/
-function drawAreaTable(id, data,text){
+function drawAreaTable(id, data){
 	if(!data || data.length <=0){
 		return;
 	}
@@ -246,7 +246,7 @@ function drawAreaTable(id, data,text){
         },
 	    series: [
 	        {
-	            name:text,
+	            name:'冲抵覆盖率（单位：%）',
 	            type:'bar',
 	            data:percentList
 	        }

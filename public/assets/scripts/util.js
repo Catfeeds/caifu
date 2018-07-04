@@ -539,3 +539,16 @@ var selectLeftNode = function(domId){
     cm.addClass("active");
     cm.parent().parent().addClass('active').find("span.arrow").addClass("open")
 };
+$("body").delegate(".page-content .page-content-expand-btn", "click", function(){
+    if($(this).hasClass("expand")){
+        $(this).removeClass("expand");
+        $(this).addClass("unexpand");
+        $(".page-sidebar-wrapper").removeClass("none");
+        $(".page-content").css("margin-left","");
+    }else{
+        $(this).addClass("expand");
+        $(this).removeClass("unexpand");
+        $(".page-sidebar-wrapper").addClass("none");
+        $(".page-content").css("margin-left","0");
+    }
+});
