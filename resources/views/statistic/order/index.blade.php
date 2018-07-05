@@ -63,7 +63,6 @@
 								<th>推荐人姓名</th>
 								<th>推荐人电话</th>
 								<th>推荐人提成奖励（元）</th>
-								<th>所属内/外员工</th>
 								<th>所属合作社ID</th>
 								<th>合作社成立时间</th>
 							</tr>
@@ -121,7 +120,6 @@
 								<td>{{$v->recommend_name}}</td>
 								<td>{{$v->recommend_mobile}}</td>
 								<td>{{$v->profit_amount}}</td>
-								<td></td>
 								<td>{{$v->club_id}}</td>
 								<td>{{date('Y-m-d H:i',$v->created_at)}}</td>
 								<td>
