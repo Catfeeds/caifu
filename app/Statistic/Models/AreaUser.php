@@ -57,13 +57,28 @@ class AreaUser extends Model{
             }
 
             foreach ($rows as $key => $v){
+                $flushingPercent = '';
+                if($v['flushing_num'] && $v['owner_num']){
+                    $flushingPercent = sprintf("%.2f",($v['flushing_num']/$v['owner_num'])*100);
+                }else if(!$v['owner_num']){
+                    $flushingPercent = sprintf("%.2f",($v['flushing_num'])*100);
+
+                }
+                $presidentPercent = '';
+                if($v['president_num'] && $v['staff_num']){
+                    $presidentPercent = sprintf("%.2f",($v['president_num']/$v['staff_num'])*100);
+                }else if(!$v['staff_num']){
+                    $presidentPercent = sprintf("%.2f",($v['president_num'])*100);
+
+                }
                 $data['flushing'][] = [
                   'area' => $key,
-                    'percent' => sprintf("%.2f",($v['flushing_num']/$v['owner_num'])*100)
+                    'percent' => $flushingPercent
                 ];
+
                 $data['president'][] = [
                     'area' => $key,
-                    'percent' => sprintf("%.2f",($v['president_num']/$v['staff_num'])*100)
+                    'percent' => $presidentPercent
                 ];
             }
         }

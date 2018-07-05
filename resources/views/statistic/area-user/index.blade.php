@@ -64,12 +64,38 @@
 							<td>{{$v->staff_num}}</td>
 							<td>{{$v->investment_num}}</td>
 							<td>{{$v->flushing_num}}</td>
-							<td>{{(sprintf("%.2f",$v->flushing_num/$v->owner_num)*100).'%'}}</td>
+							<td>
+								@if(!$v->owner_num)
+								{{(sprintf("%.2f",$v->flushing_num)*100).'%'}}
+								@elseif($v->flushing_num && $v->owner_num)
+
+								{{(sprintf("%.2f",$v->flushing_num/$v->owner_num)*100).'%'}}
+
+								@endif
+							</td>
 							<td>{{$v->recast_num}}</td>
-							<td>{{(sprintf("%.2f",$v->recast_num/$v->investment_num)*100).'%'}}</td>
+							<td>
+								@if(!$v->investment_num)
+								{{(sprintf("%.2f",$v->recast_num)*100).'%'}}
+								@elseif($v->recast_num && $v->investment_num)
+
+								{{(sprintf("%.2f",$v->recast_num/$v->investment_num)*100).'%'}}
+
+								@endif
+
+							</td>
 							<td>{{$v->referee_num}}</td>
 							<td>{{$v->president_num}}</td>
-							<td>{{(sprintf("%.2f",$v->president_num/$v->staff_num)*100).'%'}}</td>
+							<td>
+								@if(!$v->staff_num)
+								{{(sprintf("%.2f",$v->president_num)*100).'%'}}
+								@elseif($v->president_num && $v->staff_num)
+
+								{{(sprintf("%.2f",$v->president_num/$v->staff_num)*100).'%'}}
+
+								@endif
+
+							</td>
 						</tr>
 					@endforeach
 
