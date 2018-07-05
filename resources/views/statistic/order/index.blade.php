@@ -33,7 +33,7 @@
 								<th colspan="11">订单状态</th>
 								<th colspan="4">投资人信息</th>
 								<th colspan="6">订单所属架构</th>
-								<th colspan="4">订单推荐人信息</th>
+								<th colspan="3">订单推荐人信息</th>
 								<th colspan="2">订单所属合作社</th>
 								<th rowspan="2">操作</th>
 
