@@ -17,9 +17,8 @@
 							<option value="">请选择事业部</option>
 						</select> <select class="form-control name1" name='name1'>
 							<option value="">请选择片区</option>
-						</select> <select class="form-control name" name='name'>
-							<option value="">请选择项目</option>
 						</select>
+
 					</div>
 				</div>
 				<div class="search-item">
@@ -39,9 +38,9 @@
 						<span>单位：</span>
 						<select class="form-control dateTypeSelect" id ='dateType' name = "unit" value = "{{old('unit')}}"  data-target="kpiCompletion-dateTime1,kpiCompletion-dateTime2">
 
-							<option value="day">日</option>
+							<option value="day" @if(old('unit') == 'day') {{"selected"}} @endif>日</option>
 							<option value="month" @if(!old('unit') || old('unit') == 'month') {{"selected"}} @endif>月</option>
-							<option value="year">年</option>
+							<option value="year" @if(old('unit') == 'year') {{"selected"}} @endif>年</option>
 						</select>
 					</div>
 				</div>
@@ -50,12 +49,12 @@
 					<div class="search-right">
 						<div class="search-inline">
 							<input type="text" class="form-control" name = 'complete_begin' value="{{old('complete_begin')}}"
-								placeholder="请输入完成率">
+								placeholder="请输入贡献率">
 						</div>
 						-
 						<div class="search-inline">
 							<input type="text" class="form-control" name = 'complete_end' value="{{old('complete_end')}}"
-								placeholder="请输入完成率">
+								placeholder="请输入贡献率">
 						</div>
 					</div>
 				</div>

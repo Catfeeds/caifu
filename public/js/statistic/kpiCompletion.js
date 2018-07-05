@@ -26,7 +26,7 @@ $(function() {
 				});
 			}else {
 				$('.dateTimePicker').datetimepicker({
-					format: 'yyyy-mm-dd',
+					format: 'yyyy-mm',
 					autoclose: true,
 					startView: 3,
 					minView:3,

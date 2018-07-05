@@ -1,13 +1,15 @@
-@extends('statistic.layout.main') @section('js')
+@extends('statistic.layout.main')
+@section('js')
 <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
 <script src="/js/statistic/kpiContribution.js?v=1" type="text/javascript"></script>
 
-@endsection @section('content')
+@endsection
+@section('content')
 <div class="page-content-expand-btn unexpand"></div>
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
 	<li><a href="#kpiCompletion" data-toggle="tab" data-id="kpiCompletion">
-			统计表：KPI完成情况 </a></li>
+			统计表：地区KPI贡献率 </a></li>
 </ul>
 <!-- Tabcontent -->
 <div id="pageTabContent" class="tab-content">
@@ -22,7 +24,7 @@
 		</div>
 		<!-- END PAGE BAR -->
 		<!-- BEGIN PAGE CONTENT -->
-		@include('statistic.kpi-complete.search')
+		@include('statistic.kpi-contribution.search')
 
 		<div class="content-block">
 			<!-- <div class="content-block-title">
@@ -34,7 +36,7 @@
 					<thead class="custom-thead">
 						<tr class="main-title">
 							<th colspan="6">地区选择</th>
-							<th colspan="5">KPI完成情况统计</th>
+							<th colspan="5">KPI贡献情况统计</th>
 						</tr>
 						<tr>
 							<th>序号</th>
@@ -46,7 +48,7 @@
 							<th>时间（年/月/日）</th>
 							<th>KPI（万元）</th>
 							<th>GMV（万元）</th>
-							<th>完成率</th>
+							<th>贡献率</th>
 						</tr>
 					</thead>
 					<tbody id="result_field">
@@ -56,12 +58,12 @@
 							<td>{{$v->name4}}</td>
 							<td>{{$v->name3}}</td>
 							<td>
-								@if($groupField == 'name2')
+								@if(in_array($groupField,['name2','name1','name']))
 								{{$v->name2}}
 								@endif
 							</td>
 							<td>
-								@if($groupField == 'name1')
+								@if($groupField == 'name1' || $groupField == 'name')
 								{{$v->name1}}
 								@endif
 							</td>
@@ -71,20 +73,20 @@
 								@endif
 							</td>
 							<td>
-								@if(old('unit') == 'day')
-								{{date('Y-m-d',$beginTime)}} -- {{date('Y-m-d',$endTime)}}
-								@elseif(old('unit') == 'year')
+
+								@if(old('unit') == 'year')
 								{{date('Y',$beginTime)}}
 								@else
-								{{date('Y-m',$beginTime)}} -- {{date('Y-m',$endTime)}}
+								{{old('begin_time',date('Y-m',$beginTime))}} -- {{old('end_time',date('Y-m',$endTime) )}}
 
 								@endif
 							</td>
 
 
 							<td>
-							@isset($organizeKpi[$v->$groupField])
-							{{$organizeKpi[$v->$groupField]}}
+							@isset($organizeKpi[$v->$kpiGroupField])
+
+							{{$organizeKpi[$v->$kpiGroupField]}}
 							@endisset
 							</td>
 							<td>
@@ -93,8 +95,10 @@
 							@endisset
 							</td>
 							<td>
-							@if(isset($orderInfo[$v->$groupField]) && isset($organizeKpi[$v->$groupField]))
-							{{sprintf("%.2f",($orderInfo[$v->$groupField]/$organizeKpi[$v->$groupField])*100,2).'%'}}
+
+							@if(isset($orderInfo[$v->$groupField]))
+
+							{{sprintf("%.2f",($orderInfo[$v->$groupField]/$organizeKpi[$v->$kpiGroupField])*100,2).'%'}}
 							@endif
 							</td>
 						</tr>
@@ -103,11 +107,14 @@
 				</table>
 				<div class="row">
 					<div class="col-md-12">
-<!-- 						{{ $rows->links() }} -->
 						<div id = 'kpiPagination'></div>
 					</div>
 				</div>
-				<div class="chart-content" id="kpiChart"></div>
+				<input type='hidden' value = "{{$chartTitle}}" class = 'chartTitle'>
+				<input type='hidden' value = "{{date('Y',time()).'年'}}" class = 'chartDate'>
+
+				<input type='hidden' value = "{{$chartkpiData}}" class = 'chartkpiData'>
+				<div class="chart-content" id="GongxianChart"></div>
 			</div>
 		</div>
 		<!-- END PAGE CONTENT -->

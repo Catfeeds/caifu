@@ -1,36 +1,161 @@
 $(function() {
-	H.kpiContribution = {
+	H.kpiCompletion = {
 		init: function(){
 			// 选中左侧某个菜单
-			selectLeftNode('nav-kpiContribution');
+			selectLeftNode('nav-kpiCompletion');
 			// 选中上方某个tab
-			$('#pageTab a[href="#kpiContribution"]').trigger('click');
+			$('#pageTab a[href="#kpiCompletion"]').trigger('click');
 			this.events();
+			var unit = $('#dateType').val();
 			// 初始化日期选择插件
-			$('.dateTimePicker').datepicker({
-				autoclose: true,
-        		format: "yyyy-mm-dd",
-        		language: "zh-CN"
-			});
+			if(unit == 'year'){
+				$('.dateTimePicker').datetimepicker({
+					format: 'yyyy',
+					autoclose: true,
+					startView: 4,
+					minView:4,
+					language:  'zh-CN',
+				});
+			}else if(unit == 'day'){
+				$('.dateTimePicker').datetimepicker({
+					format: 'yyyy-mm-dd',
+					autoclose: true,
+					startView: 2,
+					minView:2,
+					language:  'zh-CN',
+				});
+			}else {
+				$('.dateTimePicker').datetimepicker({
+					format: 'yyyy-mm',
+					autoclose: true,
+					startView: 3,
+					minView:3,
+					language:  'zh-CN',
+				});
+			}
+			var chartkpiData = $('.chartkpiData').val();
+			var chartTitle = $('.chartTitle').val();
+			var chartDate = $('.chartDate').val();
 			// 绘制贡献率页面图表
-			drawGongxianTable("GongxianChart",gongxianData.sort(compareObject('num')));
+			drawGongxianTable("GongxianChart",JSON.parse(chartkpiData).sort(compareObject('num')));
 			// 初始化分页组件
-			initPagination("#areaKpiPagination", 100, 20, 1);
+			var total = $("#total").val();
+			var pageNum = $("#pageNum").val();
+			initPagination("#kpiPagination", total,20, pageNum);
+			//订单日期
+			$("body").delegate("#kpiCompletion-dateTime2","change",function(){
+				var thetime=$(this).val();
+				var dateType = $("#dateType").val();
+				var start=$("#kpiCompletion-dateTime1").val();
+				if(start == ''){
+					alertErrorMsg("请选择开始日期！");
+					$(this).val("");
+					return;
+				}
+				var curDate=new Date();
+				//日
+				if(dateType == 'day'){
+					var d=new Date(Date.parse(thetime.replace(/-/g,"/")));
+					d.setDate(d.getDate()+1);
+					if(d >= curDate)
+					{
+						alertErrorMsg("请选择小于今天的时间！");
+						$(this).val("");
+						return;
+					}
+					start=start.substr(5,2);
+					thetime=thetime.substr(5,2)
+					if(start != thetime){
+						alertErrorMsg("查询日期范围不能跨月！");
+						$(this).val("");
+						return;
+					}
+				}
+				//月
+				if(dateType == 'month'){
+					var d=new Date(Date.parse(thetime.replace(/-/g,"/")+'/01'));
+					if(d.getFullYear() == curDate.getFullYear() && d.getMonth() > curDate.getMonth()){
+						alertErrorMsg("请选择小于等于本月的日期！");
+						$(this).val("");
+						return;
+					};
+					start=start.replace(/-/g,"/")+'/01';
+					var startdate=new Date(start);
+			        var intervalYear =  d.getFullYear() - startdate.getFullYear();
+			        if(intervalYear != 0){
+						alertErrorMsg("查询日期范围不能跨年！");
+						$(this).val("");
+						return;
+					}
+					
+				}
+				//年
+				if(dateType == 'year'){
+					var d=new Date(thetime+'/01/01');
+					var intervalYear =  thetime - start;
+					if(d.getFullYear() > curDate.getFullYear()){
+						alertErrorMsg("请选择小于等于今年的日期！");
+						$(this).val("");
+						return;
+					};
+					if(intervalYear != 0){
+						alertErrorMsg("查询日期范围不能跨年！");
+						$(this).val("");
+						return;
+					}
+				}
+			});
 		},
 		events: function(){
-			$("body").delegate("#reStatistics","click",function(){
-				//重新统计按钮事件，打开重新统计弹层
-				$("#reStatisticsTime").val("");
-				$("#reStatisticsPopup").removeClass("none");
-			}).delegate("#reStatisticsPopup .close-btn","click",function(){
-				//重新统计弹层关闭按钮事件，关闭重新统计弹层
-				$("#reStatisticsPopup").addClass("none");
-			}).delegate("#reStatisticsPopup #reCommitBtn","click",function(){
-				//重新统计弹层提交按钮事件，展示提示信息
-				$("#reStatisticsPopup").addClass("none");
-				showAlert('数据正在重新统计中...<br>24小时后统计结果才会刷新哦！');
+			$("body").delegate("#submitForm","click",function(){
+				//搜索，分页重新开始
+				$("#pageNum").val(1);
+				$("#queryForm").submit();
+			}).delegate(".dateTypeSelect","change",function(){
+				let target = $(this).attr("data-target").split(",");
+				let val = $(this).val();
+				if(val == 'day'){
+					for(var i in target){
+						$('#' + target[i]).datetimepicker('remove');
+						$('#' + target[i]).val('');
+						// 初始化日期选择插件
+						$('#' + target[i]).datetimepicker({
+					        format: 'yyyy-mm-dd',
+					        autoclose: true,
+					        startView: 2,
+					        minView:2,
+					        language:  'zh-CN',
+						});
+					}
+				}else if(val == 'month'){
+					for(var i in target){
+						$('#' + target[i]).datetimepicker('remove');
+						$('#' + target[i]).val('');
+						// 初始化日期选择插件
+						$('#' + target[i]).datetimepicker({
+					        format: 'yyyy-mm',
+					        autoclose: true,
+					        startView: 3,
+					        minView: 3,
+					        language:  'zh-CN',
+						});
+					}
+				}else if(val == 'year'){
+					for(var i in target){
+						$('#' + target[i]).datetimepicker('remove');
+						$('#' + target[i]).val('');
+						// 初始化日期选择插件
+						$('#' + target[i]).datetimepicker({
+					        format: 'yyyy',
+					        autoclose: true,
+					        startView: 4,
+					        minView: 4,
+					        language:  'zh-CN',
+						});
+					}
+				}
 			});
 		}
 	};
-	H.kpiContribution.init();
+	H.kpiCompletion.init();
 });
