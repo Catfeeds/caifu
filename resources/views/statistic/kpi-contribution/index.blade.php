@@ -1,7 +1,7 @@
 @extends('statistic.layout.main')
 @section('js')
 <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
-<script src="/js/statistic/kpiContribution.js?v=1" type="text/javascript"></script>
+<script src="/js/statistic/kpiContribution.js?v=2" type="text/javascript"></script>
 
 @endsection
 @section('content')

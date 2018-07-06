@@ -2,9 +2,9 @@ $(function() {
 	H.kpiCompletion = {
 		init: function(){
 			// 选中左侧某个菜单
-			selectLeftNode('nav-kpiCompletion');
+			selectLeftNode('nav-kpiContribution');
 			// 选中上方某个tab
-			$('#pageTab a[href="#kpiCompletion"]').trigger('click');
+			$('#pageTab a[href="#kpiContribution"]').trigger('click');
 			this.events();
 			var unit = $('#dateType').val();
 			// 初始化日期选择插件
