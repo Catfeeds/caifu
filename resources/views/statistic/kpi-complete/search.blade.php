@@ -28,13 +28,13 @@
 						<div class="search-inline">
 							<input type="text" class="form-control dateTimePicker" id ='kpiCompletion-dateTime1' name = 'begin_time' value="{{old('begin_time',date('Y-m',$beginTime))}}"
 								data-date-format="yyyy-mm-dd" placeholder="请选择开始日期"
-								id="kpiCompletion-dateTime1"> <i class="fas fa-calendar-alt"></i>
+								id="kpiCompletion-dateTime1" autocomplete="off"> <i class="fas fa-calendar-alt"></i>
 						</div>
 						-
 						<div class="search-inline">
 							<input type="text" class="form-control dateTimePicker" id ='kpiCompletion-dateTime2' name = 'end_time' value="{{old('end_time',date('Y-m',$endTime) )}}"
 								data-date-format="yyyy-mm-dd" placeholder="请选择结束日期"
-								id="kpiCompletion-dateTime2"> <i class="fas fa-calendar-alt"></i>
+								id="kpiCompletion-dateTime2" autocomplete="off"> <i class="fas fa-calendar-alt"></i>
 						</div>
 						<span>单位：</span>
 						<select class="form-control dateTypeSelect" id ='dateType' name = "unit" value = "{{old('unit')}}"  data-target="kpiCompletion-dateTime1,kpiCompletion-dateTime2">
@@ -50,12 +50,12 @@
 					<div class="search-right">
 						<div class="search-inline">
 							<input type="text" class="form-control" name = 'complete_begin' value="{{old('complete_begin')}}"
-								placeholder="请输入完成率">
+								placeholder="请输入完成率" autocomplete="off">
 						</div>
 						-
 						<div class="search-inline">
 							<input type="text" class="form-control" name = 'complete_end' value="{{old('complete_end')}}"
-								placeholder="请输入完成率">
+								placeholder="请输入完成率" autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -64,12 +64,12 @@
 					<div class="search-right">
 						<div class="search-inline">
 							<input type="text" class="form-control" name = 'kpi_begin' value="{{old('kpi_begin')}}"
-								placeholder="请输入金额">
+								placeholder="请输入金额" autocomplete="off">
 						</div>
 						-
 						<div class="search-inline">
 							<input type="text" class="form-control" name = 'kpi_end' value="{{old('kpi_end')}}"
-								placeholder="请输入金额">
+								placeholder="请输入金额" autocomplete="off">
 						</div>
 					</div>
 				</div>

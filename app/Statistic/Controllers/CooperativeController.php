@@ -68,7 +68,7 @@ class CooperativeController extends Controller{
 
         }
         if($request->mobile){
-            $where[] = ['mobile','like','%'.trim($request->mobile).'%'];
+            $where[] = ['mobile','=',trim($request->mobile)];
 
         }
         if($request->club_id){

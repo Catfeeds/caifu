@@ -31,13 +31,13 @@
 						<div class="search-right">
 							<div class="search-inline">
 								<input type="text" name = 'begin_time' class="form-control dateTimePicker" value="{{old('begin_time')}}"
-									data-date-format="yyyy-mm-dd" placeholder="请选择日期"> <i
+									data-date-format="yyyy-mm-dd" placeholder="请选择日期" autocomplete="off"> <i
 									class="fas fa-calendar-alt"></i>
 							</div>
 							-
 							<div class="search-inline">
 								<input type="text" name ='end_time' class="form-control dateTimePicker" value="{{old('end_time')}}"
-									data-date-format="yyyy-mm-dd" placeholder="请选择日期"> <i
+									data-date-format="yyyy-mm-dd" placeholder="请选择日期" autocomplete="off"> <i
 									class="fas fa-calendar-alt"></i>
 							</div>
 						</div>

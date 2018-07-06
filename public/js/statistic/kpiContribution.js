@@ -63,13 +63,7 @@ $(function() {
 						$(this).val("");
 						return;
 					}
-					start=start.substr(5,2);
-					thetime=thetime.substr(5,2)
-					if(start != thetime){
-						alertErrorMsg("查询日期范围不能跨月！");
-						$(this).val("");
-						return;
-					}
+					
 				}
 				//月
 				if(dateType == 'month'){
@@ -79,31 +73,10 @@ $(function() {
 						$(this).val("");
 						return;
 					};
-					start=start.replace(/-/g,"/")+'/01';
-					var startdate=new Date(start);
-			        var intervalYear =  d.getFullYear() - startdate.getFullYear();
-			        if(intervalYear != 0){
-						alertErrorMsg("查询日期范围不能跨年！");
-						$(this).val("");
-						return;
-					}
+					
 					
 				}
-				//年
-				if(dateType == 'year'){
-					var d=new Date(thetime+'/01/01');
-					var intervalYear =  thetime - start;
-					if(d.getFullYear() > curDate.getFullYear()){
-						alertErrorMsg("请选择小于等于今年的日期！");
-						$(this).val("");
-						return;
-					};
-					if(intervalYear != 0){
-						alertErrorMsg("查询日期范围不能跨年！");
-						$(this).val("");
-						return;
-					}
-				}
+
 			});
 		},
 		events: function(){

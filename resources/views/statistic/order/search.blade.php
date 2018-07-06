@@ -62,13 +62,13 @@
 					<div class="search-right">
 						<div class="search-inline">
 							<input type="text" name = "order_begin_time" class="form-control dateTimePicker" value="{{old('order_begin_time')}}"
-								data-date-format="yyyy-mm-dd" placeholder="请选择日期"> <i
+								data-date-format="yyyy-mm-dd" placeholder="请选择日期" autocomplete="off"> <i
 								class="fas fa-calendar-alt"></i>
 						</div>
 						-
 						<div class="search-inline">
 							<input type="text" name = 'order_end_time' class="form-control dateTimePicker" value="{{old('order_end_time')}}"
-								data-date-format="yyyy-mm-dd" placeholder="请选择日期"> <i
+								data-date-format="yyyy-mm-dd" placeholder="请选择日期" autocomplete="off"> <i
 								class="fas fa-calendar-alt"></i>
 						</div>
 					</div>

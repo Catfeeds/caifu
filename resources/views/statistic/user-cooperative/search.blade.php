@@ -26,13 +26,13 @@
 				<div class="search-right">
 					<div class="search-inline">
 						<input type="text" name = 'user_create_time' class="form-control dateTimePicker" value="{{old('user_create_time')}}"
-							data-date-format="yyyy-mm-dd" placeholder="请选择日期"> <i
+							data-date-format="yyyy-mm-dd" placeholder="请选择日期" autocomplete="off"> <i
 							class="fas fa-calendar-alt"></i>
 					</div>
 					-
 					<div class="search-inline">
 						<input type="text" name = 'user_end_time' class="form-control dateTimePicker" value="{{old('user_end_time')}}"
-							data-date-format="yyyy-mm-dd" placeholder="请选择日期"> <i
+							data-date-format="yyyy-mm-dd" placeholder="请选择日期" autocomplete="off"> <i
 							class="fas fa-calendar-alt"></i>
 					</div>
 				</div>
@@ -42,13 +42,13 @@
 				<div class="search-right">
 					<div class="search-inline">
 						<input type="text" name = 'club_create_time' class="form-control dateTimePicker" value="{{old('club_create_time')}}"
-							data-date-format="yyyy-mm-dd" placeholder="请选择日期"> <i
+							data-date-format="yyyy-mm-dd" placeholder="请选择日期" autocomplete="off"> <i
 							class="fas fa-calendar-alt"></i>
 					</div>
 					-
 					<div class="search-inline">
 						<input type="text" name = 'club_end_time' class="form-control dateTimePicker" value="{{old('club_end_time')}}"
-							data-date-format="yyyy-mm-dd" placeholder="请选择日期"> <i
+							data-date-format="yyyy-mm-dd" placeholder="请选择日期" autocomplete="off"> <i
 							class="fas fa-calendar-alt"></i>
 					</div>
 				</div>
