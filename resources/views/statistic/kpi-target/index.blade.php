@@ -28,9 +28,9 @@
 		@include('statistic.kpi-target.search')
 
 		<div class="content-block">
-			<div class="content-block-title">
+<!-- 			<div class="content-block-title">
 				<span>KPI目标统计</span>
-			</div>
+			</div> -->
 			<div class="content-block-content">
 			    <div class = 'block-content-overflow'>
 				<table class="table table-striped table-bordered table-advance table-hover">

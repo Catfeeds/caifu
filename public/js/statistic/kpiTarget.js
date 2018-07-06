@@ -51,7 +51,7 @@ $(function() {
 				if(!month01 || !month02 || !month03 || !month04
 					|| !month05 || !month06 || !month07 || !month08 || !month09 || !month10 || !month11
 					|| !month12 || !annual){
-					alert('请填写完整的kpi目标');
+					alertErrorMsg('请填写完整的kpi目标');
 					return;
 				}
 				$.ajaxSetup({
@@ -86,10 +86,10 @@ $(function() {
 						  $("#tr-" + id + " .apiTargetEditBtn").removeClass('none');
 						  $("#tr-" + id + " .apiTargetSaveBtn").addClass("none");
 						  if(json.errcode == 0){
-							  alert('操作成功');
+							  alertErrorMsg('操作成功');
 							  window.location.reload();
 						  }else{
-							  alert(json.msg);
+							  alertErrorMsg(json.msg);
 						  }
 					  },
 					  dataType: 'json'

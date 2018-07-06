@@ -35,7 +35,7 @@ $(function() {
 			}).delegate("#reStatisticsPopup #reCommitBtn","click",function(){
 				var beginTime = $('#reStatisticsTime').val();
 				if(!beginTime){
-					alert('请选择时间段');
+					alertErrorMsg('请选择时间段');
 					return false;
 				}
 				//重新统计弹层提交按钮事件，展示提示信息

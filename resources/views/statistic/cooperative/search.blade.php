@@ -94,8 +94,8 @@
 					</div>
 				</div>
 				<div class="btn-group">
-					<input type='submit' class='btn blue' value="搜索"> <a
-						class="btn default">导出Excel</a> <a class="btn default">导入Excel</a>
+						<input type='submit' class='btn green' value="搜索">
+						<a class="btn blue">导出Excel</a> <a class="btn blue">导入Excel</a>
 				</div>
 			</div>
 		</form>

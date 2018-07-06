@@ -111,7 +111,7 @@ $(function() {
 				var area = $("#tr-" + id + " .name1").val();
 				var project = $("#tr-" + id + " .name").val();
 				if(!o_group || !large_area || !department ||!area || !project){
-					alert('请选择完组织架构信息');
+					alertErrorMsg('请选择完组织架构信息');
 					return false;
 				}
 				$.ajax({
@@ -136,10 +136,10 @@ $(function() {
 							$("#tr-" + id + " span").removeClass("none");
 							$("#tr-" + id + " .orderEditBtn").removeClass('none');
 							$("#tr-" + id + " .orderSaveBtn").addClass("none");
-							alert('操作成功');
+							alertErrorMsg('操作成功');
 							window.location.reload();
 				  		}else{
-				  			alert(json.msg);
+				  			alertErrorMsg(json.msg);
 				  		}
 					 	
 

@@ -19,9 +19,9 @@
 		<!-- END PAGE BAR -->
 		<!-- BEGIN PAGE CONTENT -->
 		<div class="content-block">
-			<div class="content-block-title">
+<!-- 			<div class="content-block-title">
 				<span>筛选</span>
-			</div>
+			</div> -->
 			<div class="content-block-content">
 				<div class="search-content">
 					<div class="btn-group">
@@ -32,9 +32,9 @@
 			</div>
 		</div>
 		<div class="content-block">
-			<div class="content-block-title">
+<!-- 			<div class="content-block-title">
 				<span>KPI完成情况统计</span>
-			</div>
+			</div> -->
 			<div class="content-block-content">
 				<table
 					class="table table-striped table-bordered table-advance table-hover">

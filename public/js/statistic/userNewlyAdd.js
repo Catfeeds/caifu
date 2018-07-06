@@ -208,7 +208,7 @@ $(function() {
 			}).delegate("#reStatisticsPopup #reCommitBtn","click",function(){
 				var beginTime = $('#reStatisticsTime').val();
 				if(!beginTime){
-					alert('请选择时间段');
+					alertErrorMsg('请选择时间段');
 					return false;
 				}
 				
@@ -231,7 +231,7 @@ $(function() {
 							showAlert('数据统计成功');
 							window.location.reload();
 						}else{
-							alert(json.msg);
+							alertErrorMsg(json.msg);
 						}
 
 
@@ -285,7 +285,7 @@ $(function() {
 
 			
 			if(!beginTime || !endTime){
-				alert('请选择时间段');
+				alertErrorMsg('请选择时间段');
 				return false;
 			}
 			
@@ -306,7 +306,7 @@ $(function() {
 					if(json.errcode == 0){
 			 			drawUserTable(id,json.data);
 					}else{
-						alert(json.msg);
+						alertErrorMsg(json.msg);
 					}
 
 

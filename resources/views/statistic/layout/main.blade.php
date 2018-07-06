@@ -63,6 +63,7 @@
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
+                <div class="page-content-expand-btn unexpand"></div>
 					@yield('content')
                 </div>
                 <!-- END CONTENT BODY -->

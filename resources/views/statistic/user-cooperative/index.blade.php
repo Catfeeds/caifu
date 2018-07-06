@@ -22,9 +22,9 @@
 		<!-- BEGIN PAGE CONTENT -->
 		@include('statistic.user-cooperative.search')
 		<div class="content-block">
-			<div class="content-block-title">
+<!-- 			<div class="content-block-title">
 				<span>合作社统计</span>
-			</div>
+			</div> -->
 			<div class="content-block-content">
 				 <div class = 'block-content-overflow'>
 				<table

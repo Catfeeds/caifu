@@ -5,7 +5,6 @@
 
 @endsection
 @section('content')
-<div class="page-content-expand-btn unexpand"></div>
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
 	<li><a href="#kpiCompletion" data-toggle="tab" data-id="kpiCompletion">

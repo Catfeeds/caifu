@@ -53,16 +53,14 @@
 						</div>
 					</div>
 					<div class="btn-group">
-						<a class="btn default">导出Excel</a> <a class="btn default"
+						<a class="btn blue">导出Excel</a> <a class="btn default"
 							id="reStatistics">重新统计</a>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="content-block">
-			<div class="content-block-title">
-				<span>彩富人生新增用户</span> <span class="content-block-title-right">昨日日期：2018年08月20日</span>
-			</div>
+
 			<div class="content-block-content">
 				<table
 					class="table table-striped table-bordered table-advance table-hover">
@@ -107,6 +105,7 @@
 					</tbody>
 				</table>
 				<div class="user-chart">
+					<div class = 'user-char-line'>
 					<div class="user-chart-item">
 						<p>用户增长</p>
 						<div class="search-item">
@@ -161,6 +160,8 @@
 						</div>
 						<div class="chart-content" id="userChart2"></div>
 					</div>
+					</div>
+					<div class = 'user-char-line'>
 					<div class="user-chart-item">
 						<p>合作社增长</p>
 						<div class="search-item">
@@ -216,6 +217,7 @@
 							</div>
 						</div>
 						<div class="chart-content" id="userChart4"></div>
+					</div>
 					</div>
 				</div>
 			</div>

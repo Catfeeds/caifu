@@ -3,7 +3,6 @@
 <script src="/js/statistic/cooperative.js" type="text/javascript"></script>
 
 @endsection @section('content')
-<div class="page-content-expand-btn unexpand"></div>
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
 	<li><a href="#cooperative" data-toggle="tab" data-id="cooperative">

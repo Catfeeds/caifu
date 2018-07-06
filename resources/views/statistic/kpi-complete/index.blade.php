@@ -3,7 +3,6 @@
 <script src="/js/statistic/kpiCompletion.js?v=1" type="text/javascript"></script>
 
 @endsection @section('content')
-<div class="page-content-expand-btn unexpand"></div>
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
 	<li><a href="#kpiCompletion" data-toggle="tab" data-id="kpiCompletion">

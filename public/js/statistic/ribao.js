@@ -43,7 +43,7 @@ $(function() {
 			}).delegate("#reStatisticsPopup #reCommitBtn","click",function(){
 				var time = $('#reStatisticsTime').val();
 				if(!time){
-					alert('请选择时间');
+					alertErrorMsg('请选择时间');
 					return;
 				}
 				//重新统计弹层提交按钮事件，展示提示信息
@@ -65,7 +65,7 @@ $(function() {
 				  			showAlert('统计成功');
 				  			window.location.reload();
 				  		}else{
-				  			showAlert(json.msg);
+				  			alertErrorMsg(json.msg);
 				  		}
 
 
@@ -80,7 +80,7 @@ $(function() {
 			var beginTime = $('.stat-daily-begin_time').val();
 			var endTime = $('.stat-daily-end_time').val();
 			if(!beginTime || !endTime){
-				alert('请选择时间段');
+				alertErrorMsg('请选择时间段');
 				return false;
 			}
 			$.ajaxSetup({
@@ -103,7 +103,7 @@ $(function() {
 					if(json.errcode == 0){
 						drawRibaoTable("ribaoChart",json.data);
 					}else{
-						alert(json.msg);
+						alertErrorMsg(json.msg);
 					}
 
 
