@@ -70,12 +70,11 @@
 								@endif
 							</td>
 							<td>
-								@if(old('unit') == 'day')
-								{{date('Y-m-d',$beginTime)}} -- {{date('Y-m-d',$endTime)}}
-								@elseif(old('unit') == 'year')
+
+								@if(old('unit') == 'year')
 								{{date('Y',$beginTime)}}
 								@else
-								{{date('Y-m',$beginTime)}} -- {{date('Y-m',$endTime)}}
+								{{old('begin_time',date('Y-m',$beginTime))}} -- {{old('end_time',date('Y-m',$endTime) )}}
 
 								@endif
 							</td>
