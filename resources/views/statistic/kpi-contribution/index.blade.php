@@ -7,13 +7,13 @@
 @section('content')
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
-	<li><a href="#kpiCompletion" data-toggle="tab" data-id="kpiCompletion">
+	<li><a href="#kpiContribution" data-toggle="tab" data-id="kpiContribution">
 			统计表：地区KPI贡献率 </a></li>
 </ul>
 <!-- Tabcontent -->
 <div id="pageTabContent" class="tab-content">
 	<!-- KPI完成情况统计 -->
-	<div class="tab-pane fade" id="kpiCompletion">
+	<div class="tab-pane fade" id="kpiContribution">
 		<!-- BEGIN PAGE BAR -->
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
