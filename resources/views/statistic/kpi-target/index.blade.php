@@ -3,6 +3,7 @@
 @section('js')
   <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
   <script src="/js/statistic/kpiTarget.js?v=1" type="text/javascript"></script>
+  <script src="/assets/plugins/jquery.form.js" type="text/javascript"></script>
 
 @endsection
 
@@ -108,4 +109,27 @@
 		<!-- END PAGE CONTENT -->
 	</div>
 </div>
+        <!-- 导入Excel Modal -->
+        <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">导入Excel</h4>
+              </div>
+              <div class="modal-body">
+                <form action = "/statistic/kpi-target/import" id = 'importFrom' method = 'post' enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label for="excel-file" class="control-label">选择Excel文件:</label>
+                    <input type="file" class="form-control" id="excel-file" name = 'file'>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn default" data-dismiss="modal">放弃</button>
+                <button type="button" class="btn blue" id="importExcelSubmitBtn">提交</button>
+              </div>
+            </div>
+          </div>
+        </div>
 @endsection

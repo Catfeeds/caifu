@@ -41,9 +41,10 @@
 			</div>
 			<div class="btn-group">
 				<input type='submit' class = 'btn green' value = "搜索">
-				<a class="btn blue">导出Excel</a>
-				<a class="btn blue">导入Excel</a> <a class="btn default"
-					id="reStatistics">重新统计</a>
+                <a class="btn blue">导出Excel</a>
+                <a class="btn blue" id="importBtn">导入Excel</a>
+<!--                 <a class="btn default" id="reStatistics">重新统计</a> -->
+                <input type="file" id="importFile" class="none">
 			</div>
 		</div>
 		</form>

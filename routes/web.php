@@ -19,6 +19,8 @@ Route::get('/', function () {
 Route::group(['prefix' => '/statistic/kpi-target'], function() {
     Route::get('/index','\App\Statistic\Controllers\KpiTargetController@index');
     Route::post('/edit','\App\Statistic\Controllers\KpiTargetController@edit');
+    Route::post('/import','\App\Statistic\Controllers\KpiTargetController@import');
+
 });
 
 Route::group(['prefix' => '/statistic/api'], function() {

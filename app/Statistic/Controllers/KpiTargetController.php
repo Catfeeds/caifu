@@ -5,6 +5,8 @@ namespace App\Statistic\Controllers;
 use App\Statistic\Models\OrganizeKpiTarget;
 use Illuminate\Http\Request;
 use App\Statistic\Models\Common;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class KpiTargetController extends Controller{
 
@@ -24,7 +26,7 @@ class KpiTargetController extends Controller{
             $where[] = ['large_area','=',trim($request->name3)];
         }
         $request->flash();
-        $rows = OrganizeKpiTarget::getRows('*',$where,TRUE,1);
+        $rows = OrganizeKpiTarget::getRows('*',$where,TRUE,20);
         $rows->appends($_REQUEST);
         return view('/statistic/kpi-target/index',['rows' => $rows,'year' => OrganizeKpiTarget::$getYear]);
     }
@@ -60,4 +62,52 @@ class KpiTargetController extends Controller{
         $res = $model->save();
         return Common::jsonResponse();
     }
+
+    public function import(Request $request){
+
+        if(!$request->hasFile('file')){
+            exit('上传文件为空！');
+        }
+        $file = $_FILES;
+        $excel_file_path = $file['file']['tmp_name'];
+        $res = [];
+        Excel::load($excel_file_path, function($reader) use( &$res ) {
+            $reader = $reader->getSheet(0);
+            $res = $reader->toArray();
+        });
+        $insertData = [];
+        for($i = 1;$i<count($res);$i++){
+             $insertData[] = [
+                 'o_group' => $res[$i][0],
+                 'large_area' => $res[$i][1],
+                 'department' => $res[$i][2],
+                 'area' => $res[$i][3],
+                 'project' => $res[$i][4],
+                 'year' => $res[$i][5],
+                 'month01' => $res[$i][6],
+                 'month02' => $res[$i][7],
+                 'month03' => $res[$i][8],
+                 'month04' => $res[$i][9],
+                 'month05' => $res[$i][10],
+                 'month06' => $res[$i][11],
+                 'month07' => $res[$i][12],
+                 'month08' => $res[$i][13],
+                 'month09' => $res[$i][14],
+                 'month10' => $res[$i][15],
+                 'month11' => $res[$i][16],
+                 'month12' => $res[$i][17],
+                 'annual' => $res[$i][18],
+
+             ];
+        }
+        if(!empty($insertData)){
+            DB::table('organize_kpi_target')->insert($insertData);
+            return Common::jsonResponse();
+        }else{
+            return Common::jsonResponse(-1,'表格数据为空');
+        }
+
+    }
+
+
 }

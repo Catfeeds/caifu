@@ -1,6 +1,11 @@
 $(function() {
 	H.kpiTarget = {
 		init: function(){
+			$.ajaxSetup({
+				    headers: {
+				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    }
+			});
 			// 选中左侧某个菜单
 			selectLeftNode('nav-kpiTarget');
 			// 选中上方某个tab
@@ -13,6 +18,64 @@ $(function() {
 		        startView: 2,
 		        minView:2,
 		        language:  'zh-CN',
+			});
+			// 导入excel 按钮点击事件
+			$("#importBtn").click(function(e){
+				e.preventDefault();
+				$('#importExcelModal').modal('show');
+			});
+			// 导入excel弹层 提交按钮点击事件
+			$("#importExcelSubmitBtn").click(function(e){
+				e.preventDefault();
+				var form = $("#importFrom");   
+				var formdata = new FormData(form);  
+				console.log(formdata);	
+				if(!formdata){
+					alertErrorMsg('请选择导入文件');
+					return;
+				}  
+				$("#importFrom").ajaxSubmit({
+		          type:'post',
+		          url:'/statistic/kpi-target/import',
+		          success:function(json){
+		          	console.log(json);
+		            if(json.errcode == 0){
+						  	 // 关闭弹层
+							 $('#importExcelModal').modal('hide');
+							  alertErrorMsg('操作成功');
+							  window.location.reload();
+					}else{
+							  alertErrorMsg(json.msg);
+					}
+		          },
+		          error:function(XmlHttpRequest,textStatus,errorThrown){
+		            console.log(XmlHttpRequest);
+		            console.log(textStatus);
+		            console.log(errorThrown);
+		          }
+		        });
+
+				// $.ajax({
+				// 	  type: 'POST',
+				// 	  url: '/statistic/kpi-target/import',
+				// 	  data:formdata,
+				// 	  async: false,  
+			 //          cache: false,  
+			 //          contentType: false,  
+			 //          processData: false,
+				// 	  success: function(json){
+				
+				// 		  if(json.errcode == 0){
+				// 		  	 // 关闭弹层
+				// 			 $('#importExcelModal').modal('hide');
+				// 			  alertErrorMsg('操作成功');
+				// 			  window.location.reload();
+				// 		  }else{
+				// 			  alertErrorMsg(json.msg);
+				// 		  }
+				// 	  },
+				// 	  dataType: 'json'
+				// });
 			});
 		},
 		events: function(){
@@ -54,11 +117,7 @@ $(function() {
 					alertErrorMsg('请填写完整的kpi目标');
 					return;
 				}
-				$.ajaxSetup({
-				    headers: {
-				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				    }
-				});
+				
 				$.ajax({
 					  type: 'POST',
 					  url: '/statistic/kpi-target/edit',
