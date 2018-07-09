@@ -41,9 +41,8 @@ class Ribao extends Command
     {
         //
        $ribao = new RibaoController();
-       $request = new Request();
-       $request->time = date('Y-m-d',strtotime("-1 day"));
-       $result = $ribao->reset($request);
+
+       $result = $ribao->addLastDay(strtotime("-1 day"));
 
     }
 }

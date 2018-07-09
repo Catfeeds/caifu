@@ -18,7 +18,11 @@ class RibaoController extends Controller{
         return view('/statistic/ribao/index',['rows' => $rows]);
     }
 
-
+    /**
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse 重新统计日报数据
+     */
     public function reset(Request $request){
 
         $time = $request->time;
@@ -30,6 +34,39 @@ class RibaoController extends Controller{
         if($time >= time()){
             return Common::jsonResponse(-1,'统计时间不能大于当前时间');
         }
+        $insertData = $this->getInsertData($time);
+        DB::beginTransaction();
+        DB::table('stat_daily')->delete();
+        if(!empty($insertData)){
+            $insertData = array_values($insertData);
+            $result = DB::table('stat_daily')->insert($insertData);
+
+        }
+        DB::commit();
+
+        return Common::jsonResponse(0,'');
+
+    }
+    /**
+     *
+     * @param integer $time 统计时间
+     * @return \Illuminate\Http\JsonResponse 定时统计上一天的日报数据
+     */
+    public function addLastDay($time){
+        $insertData = $this->getInsertData($time);
+        DB::beginTransaction();
+        if(!empty($insertData)){
+            $insertData = array_values($insertData);
+            $result = DB::table('stat_daily')->insert($insertData);
+
+        }
+        DB::commit();
+
+        return Common::jsonResponse(0,'');
+    }
+
+    private function getInsertData($time){
+
         $orderRows = Order::getOrderList($time);//冲抵，资金交易数据
         $clubData = ClubJoin::getClubData($time);//社长/社员数量信息
         $endTime = strtotime(date('Y-m-d',time()));
@@ -47,12 +84,12 @@ class RibaoController extends Controller{
             $insertData[$i]['member_num'] = 0;
             if(isset($orderRows[$key])){
 
-                    $insertData[$i]['property_fee'] = $orderRows[$key]['advancePropertyAmount'];
-                    $insertData[$i]['parking_fee'] = $orderRows[$key]['parkingAmount'];
-                    $insertData[$i]['offset_fee'] = $insertData[$i]['property_fee']+$insertData[$i]['parking_fee'];
-                    $insertData[$i]['offset_num'] = $orderRows[$key]['advancePropertyCount'] + $orderRows[$key]['parkingCount'];
-                    $insertData[$i]['investment_amounts'] = $orderRows[$key]['allAmount'];
-                    $insertData[$i]['investment_num'] = $orderRows[$key]['allCount'];
+                $insertData[$i]['property_fee'] = $orderRows[$key]['advancePropertyAmount'];
+                $insertData[$i]['parking_fee'] = $orderRows[$key]['parkingAmount'];
+                $insertData[$i]['offset_fee'] = $insertData[$i]['property_fee']+$insertData[$i]['parking_fee'];
+                $insertData[$i]['offset_num'] = $orderRows[$key]['advancePropertyCount'] + $orderRows[$key]['parkingCount'];
+                $insertData[$i]['investment_amounts'] = $orderRows[$key]['allAmount'];
+                $insertData[$i]['investment_num'] = $orderRows[$key]['allCount'];
 
 
 
@@ -65,18 +102,7 @@ class RibaoController extends Controller{
 
             $i += 86400;
         }
-        DB::beginTransaction();
-        DB::table('stat_daily')->delete();
-        if(!empty($insertData)){
-            $insertData = array_values($insertData);
-            $result = DB::table('stat_daily')->insert($insertData);
-
-        }
-        DB::commit();
-
-        return Common::jsonResponse(0,'');
-
+        return $insertData;
     }
-
 
 }
