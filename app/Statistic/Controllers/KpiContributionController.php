@@ -103,12 +103,13 @@ class KpiContributionController extends Controller{
             $unit = 'month';
 
         }
-
+        $chartGmvWhere = $orderWhere;//图标的订单gmv的搜索条件
+        $chartGmvWhere .= ' and b.created_at >= '.strtotime(date('Y',time()).'-01-01');
+        $chartGmvWhere .= ' and b.created_at <'.strtotime(date('Y',time()).'-01-01'.'+1 year');
 
         $orderWhere .= " and b.created_at >= ".$beginTime;
 
         $orderWhere .= " and b.created_at < ".$endTime;
-
         $beginGmv = $request->kpi_begin;
         $endGmv = $request->kpi_end;
 
@@ -143,10 +144,9 @@ class KpiContributionController extends Controller{
             $total = count($rows);
         }
         $rows->appends($_REQUEST);
-        $chartWhere = " and b.created_at >= ".$beginTime." and b.created_at < ".$endTime;
 
-        $chartKpiOrderData = $this->getOrderList($chartWhere,'name3');
-        $chartkpiData = $this->getChartKpiData($chartKpiOrderData);
+        $chartkpiData = $this->getChartKpiData($orderInfo);
+
         return view('/statistic/kpi-contribution/index',[
             'rows' => $rows,
             'total' => $total,
