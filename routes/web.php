@@ -35,13 +35,14 @@ Route::any('/statistic/user-cooperative/index','\App\Statistic\Controllers\UserC
 Route::any('/statistic/user-cooperative/reset','\App\Statistic\Controllers\UserCooperativeController@reset');
 
 Route::get('/statistic/ribao/index','\App\Statistic\Controllers\RibaoController@index');
-Route::post('/statistic/ribao/reset','\App\Statistic\Controllers\RibaoController@reset');
+Route::any('/statistic/ribao/reset','\App\Statistic\Controllers\RibaoController@reset');
 
 
 Route::post('/statistic/api/get-stat-daily','\App\Statistic\Controllers\ApiController@getStatDaily');
 
 
 Route::get('/statistic/area-user/index','\App\Statistic\Controllers\AreaUserController@index');
+Route::any('/statistic/area-user/reset','\App\Statistic\Controllers\AreaUserController@reset');
 
 Route::group(['prefix' => '/statistic/user-add'], function() {
     Route::get('/index','\App\Statistic\Controllers\UserAddController@index');

@@ -3,6 +3,7 @@
 namespace App\Statistic\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Foreach_;
 class Order extends Model{
 
     protected $table = 'order_master';
@@ -219,6 +220,89 @@ class Order extends Model{
         DB::table('order_master')->update($data);
     }
 
+
+    public static function getAreaUserOrder($time){
+        $query = DB::table('order_master as a')->select('a.user_id','a.created_at','a.investment_amount','a.model_name','a.community_code','b.recommend_id');
+        $query->leftJoin('user_recommend_log as b','a.sn','=','b.sn');
+
+        $result = $query->where('a.created_at','>=',$time)->whereNotIn('a.status',[0,500,101])->orderBy('a.id','asc')->get()->toArray();
+        $rows = [];
+        $recastRows = [];
+        $userIdList = array_column($result,'user_id');
+        array_unique($userIdList);
+        $clubUserList = Club::select(['user_id'])->where(['status' => 0])->whereIn('user_id',$userIdList)->get()->toArray();//社长数集合
+        $clubUserList = array_column($clubUserList, NULL,'user_id');
+
+        if(!empty($result)){
+
+           foreach ($result as $v){
+               $rows[$v->community_code]['all'][$v->user_id] = 1;//投资户数
+               if(in_array($v->model_name,['AdvanceProperty','Parking','Property'])){
+                   $rows[$v->community_code]['flushing'][$v->user_id] = 1;//冲抵户数
+
+               }
+               if(!isset($recastRows[$v->community_code]['count'][$v->user_id])){
+                   $recastRows[$v->community_code]['count'][$v->user_id] = 1;
+                   $recastRows[$v->community_code]['time'][$v->user_id] = $v->created_at;
+               }else{
+                   $date1 = date('Y-m-d',$recastRows[$v->community_code]['time'][$v->user_id]);
+                   $date2 = date('Y-m-d',$v->created_at);
+                   $res = self::getMonthNum($date1, $date2);
+                   if($res){
+                       $rows[$v->community_code]['recast'][$v->user_id] = 1;//复投户数
+                   }else{
+                       $recastRows[$v->community_code]['time'][$v->user_id] = $v->created_at;
+                   }
+               }
+               if(isset($clubUserList[$v->user_id])){
+                   $rows[$v->community_code]['master'][$v->user_id] = 1;//社长数
+                   unset($clubUserList[$v->user_id]);
+               }
+               //推荐人数
+               if($v->recommend_id){
+                   $rows[$v->community_code]['recommend'][$v->recommend_id] = 1;//投资户数
+
+               }
+
+
+
+           }
+           foreach ($rows as $k => $v){
+               $rows[$k]['all'] = count($rows[$k]['all']);
+               $rows[$k]['flushing'] = isset($rows[$k]['flushing'])?count($rows[$k]['flushing']):0;
+               $rows[$k]['recast'] = isset($rows[$k]['recast'])?count($rows[$k]['recast']):0;
+               $rows[$k]['master'] = isset($rows[$k]['master'])?count($rows[$k]['master']):0;
+               $rows[$k]['recommend'] = isset($rows[$k]['recommend'])?count($rows[$k]['recommend']):0;
+           }
+        }
+
+        return $rows;
+    }
+
+    /**
+     * @var date1日期1
+     * @var date2 日期2
+     * @var tags 年月日之间的分隔符标记,默认为'-'
+     * @return 相差的月份数量
+     * @example:
+     $date1 = "2003-08-11";
+     $date2 = "2008-11-06";
+     $monthNum = getMonthNum( $date1 , $date2 );
+     * 判断是否是6个月内，是则返回true
+     */
+    public static function getMonthNum( $date1, $date2, $tags='-' ){
+        $date1 = explode($tags,$date1);
+        $date2 = explode($tags,$date2);
+        $day = abs($date1[2] - $date2[2]);
+        $month = ($date2[0] - $date1[0]) * 12 + ($date2[1] - $date1[1]);
+        if($month > 6){
+            return false;
+        }
+        if($month == 6 && $day > 0){
+            return  false;
+        }
+        return true;
+    }
 
 
 }

@@ -39,6 +39,22 @@ class Club extends Model{
             return $rows ;
     }
 
+    /**
+     *
+     * @param string $fields 查询字段
+     * @param array $where 查询条件
+     * @return 返回合作社信息
+     */
+    public static function getRows($fields = '*',$where = []){
+
+       $query = self::select($fields)->where(['status' => 0]);
+       if(!empty($where)){
+           $query->where($where);
+       }
+
+       $result = $query->get()->toArray();
+       return $result;
+    }
 
 
 

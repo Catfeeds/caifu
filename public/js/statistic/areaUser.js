@@ -1,13 +1,18 @@
 $(function() {
 	H.areaUser = {
 		init: function(){
+			$.ajaxSetup({
+			    headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    }
+			});
 			// 选中左侧某个菜单
 			selectLeftNode('nav-areaUser');
 			// 选中上方某个tab
 			$('#pageTab a[href="#areaUser"]').trigger('click');
 			this.events();
 			// 初始化日期选择插件
-			$('.dateTimePicker').datetimepicker({
+			$('#reStatisticsTime').datetimepicker({
 				format: 'yyyy-mm-dd',
 		        autoclose: true,
 		        startView: 2,
@@ -29,9 +34,36 @@ $(function() {
 				//重新统计弹层关闭按钮事件，关闭重新统计弹层
 				$("#reStatisticsPopup").addClass("none");
 			}).delegate("#reStatisticsPopup #reCommitBtn","click",function(){
+				var time = $('#reStatisticsTime').val();
+				if(!time){
+					alertErrorMsg('请选择时间');
+					return;
+				}
 				//重新统计弹层提交按钮事件，展示提示信息
 				$("#reStatisticsPopup").addClass("none");
-				showAlert('数据正在重新统计中...<br>24小时后统计结果才会刷新哦！');
+				showAlert('数据正在重新统计中...');
+				$.ajax({
+					  type: 'POST',
+					  url: '/statistic/area-user/reset',
+					  data: {
+						  'time' : time,
+
+					  },
+					  success: function(json){
+
+						  
+
+					  		if(json.errcode == 0){
+					  			showAlert('统计成功');
+					  			window.location.reload();
+					  		}else{
+					  			alertErrorMsg(json.msg);
+					  		}
+
+
+					  },
+					  dataType: 'json'
+				});
 			});
 		}
 	};
