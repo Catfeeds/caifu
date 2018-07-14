@@ -82,6 +82,7 @@ class AreaUserController extends Controller{
         if($time >= time()){
             return Common::jsonResponse(-1,'统计时间不能大于当前时间');
         }
+        Log::info('aaaaaaaaaa');
         $organizeList = Organize::getAreaUserInfo();
         $orderRows = Order::getAreaUserOrder($time);//冲抵，资金交易数据
         $insertData = [];
