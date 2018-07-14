@@ -46,8 +46,9 @@ class AreaUserController extends Controller{
         $probabilityData = AreaUser::getLargeArea();
         return view('/statistic/area-user/index',[
             'rows' => $rows,
-            'flushing' => json_encode($probabilityData['flushing'],true),
-            'president' => json_encode($probabilityData['president'],true)]);
+            'flushing' => isset($probabilityData['flushing'])?json_encode($probabilityData['flushing'],true):'',
+            'president' => isset($probabilityData['president'])?json_encode($probabilityData['president'],true):''
+            ]);
     }
 
 
