@@ -56,13 +56,13 @@ class AreaUserController extends Controller{
 
         set_time_limit(0);
         ob_end_clean();
-        header("Connection: close");
-        header("HTTP/1.1 200 OK");
-        header("Content-Type: application/json;charset=utf-8");// 如果前端要的是json则添加，默认是返回的html/text
+//         header("Connection: close");
+//         header("HTTP/1.1 200 OK");
+//         header("Content-Type: application/json;charset=utf-8");// 如果前端要的是json则添加，默认是返回的html/text
         ob_start();
         echo Common::jsonResponse(0,'');// 输出结果到前端
-        $size = ob_get_length();
-        header("Content-Length: $size");
+//         $size = ob_get_length();
+//         header("Content-Length: $size");
         ob_end_flush();
         flush();
 
