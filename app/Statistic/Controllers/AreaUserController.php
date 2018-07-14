@@ -58,15 +58,15 @@ class AreaUserController extends Controller{
         ob_end_clean();
 //         header("Connection: close");
 //         header("HTTP/1.1 200 OK");
-//         header("Content-Type: application/json;charset=utf-8");// 如果前端要的是json则添加，默认是返回的html/text
+        header("Content-Type: application/json;charset=utf-8");// 如果前端要的是json则添加，默认是返回的html/text
         ob_start();
         echo Common::jsonResponse(0,'');// 输出结果到前端
-//         $size = ob_get_length();
-//         header("Content-Length: $size");
+        $size = ob_get_length();
+        header("Content-Length: $size");
         ob_end_flush();
         flush();
 
-        if (function_exists("fastcgi_finish_request")) { // yii或yaf默认不会立即输出，加上此句即可（前提是用的fpm）
+        if (function_exists("fastcgi_finish_request")) {
             fastcgi_finish_request(); // 响应完成, 立即返回到前端,关闭连接
         }
         sleep(2);
@@ -83,6 +83,7 @@ class AreaUserController extends Controller{
             return Common::jsonResponse(-1,'统计时间不能大于当前时间');
         }
         Log::info('aaaaaaaaaa');
+        exit();
         $organizeList = Organize::getAreaUserInfo();
         $orderRows = Order::getAreaUserOrder($time);//冲抵，资金交易数据
         $insertData = [];

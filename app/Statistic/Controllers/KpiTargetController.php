@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\DB;
 class KpiTargetController extends Controller{
 
     public function index(Request $request){
+        $where = $this->getWhere($request);
+        $request->flash();
+        $rows = OrganizeKpiTarget::getRows('*',$where,TRUE,20);
+        $rows->appends($_REQUEST);
+        return view('/statistic/kpi-target/index',['rows' => $rows,'year' => OrganizeKpiTarget::$getYear]);
+    }
+
+    private function getWhere($request){
         $where = [];
 
         if($request->year){
@@ -25,12 +33,8 @@ class KpiTargetController extends Controller{
         }else if($request->name3){
             $where[] = ['large_area','=',trim($request->name3)];
         }
-        $request->flash();
-        $rows = OrganizeKpiTarget::getRows('*',$where,TRUE,20);
-        $rows->appends($_REQUEST);
-        return view('/statistic/kpi-target/index',['rows' => $rows,'year' => OrganizeKpiTarget::$getYear]);
+        return $where;
     }
-
 
     public function edit(){
 //         $this->validate(request(), [
@@ -109,5 +113,31 @@ class KpiTargetController extends Controller{
 
     }
 
+    public function export(Request $request){
+        $where = $this->getWhere($request);
+        $result = OrganizeKpiTarget::getRows('*',$where,false);
+        $result = $result->toArray();
+        $rows[] = ['序号','集团','大区','事业部','片区','项目','年份','1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月','全年'];
+        if(!empty($result)){
+            foreach ($result as $v){
+                $rows[] = [
+                    $v['id'],$v['o_group'],$v['large_area'],$v['department'],$v['area'],$v['project'],
+                    $v['year'],$v['month01'],$v['month02'],$v['month03'],$v['month04'],$v['month05'],$v['month06'],
+                    $v['month07'],$v['month08'],$v['month09'],$v['month10'],$v['month11'],$v['month12'],$v['annual']
+
+                ];
+            }
+        }
+        Excel::create('kpi目标数据',function($excel) use ($rows){
+
+            $excel->sheet('score', function($sheet) use ($rows){
+
+                $sheet->rows($rows);
+
+            });
+
+        })->export('xls');
+
+    }
 
 }

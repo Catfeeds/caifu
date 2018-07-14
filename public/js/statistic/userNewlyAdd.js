@@ -21,6 +21,12 @@ $(function() {
 		        minView:2,
 		        language:  'zh-CN',
 			});
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/user-add/export','_blank');
+
+			});
+
 			$.ajaxSetup({
 			    headers: {
 			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

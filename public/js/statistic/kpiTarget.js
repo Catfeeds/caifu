@@ -77,6 +77,12 @@ $(function() {
 				// 	  dataType: 'json'
 				// });
 			});
+
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/kpi-target/export?'+$('#formId').serialize(),'_blank');
+
+			});
 		},
 		events: function(){
 			$("body").delegate("#reStatistics","click",function(){

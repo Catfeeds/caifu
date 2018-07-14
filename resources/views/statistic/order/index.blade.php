@@ -1,6 +1,6 @@
 @extends('statistic.layout.main') @section('js')
 <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
-<script src="/js/statistic/order.js" type="text/javascript"></script>
+<script src="/js/statistic/order.js?v=11111" type="text/javascript"></script>
 @endsection @section('content')
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
@@ -121,7 +121,7 @@
 								<td>{{$v->recommend_mobile}}</td>
 								<td>{{$v->profit_amount}}</td>
 								<td>{{$v->club_id}}</td>
-								<td>{{date('Y-m-d H:i',$v->created_at)}}</td>
+								<td>{{$v->created_at?date('Y-m-d H:i',$v->created_at):''}}</td>
 								<td>
                                    <a class="btn orderEditBtn" data-id="{{$v->id}}">编辑</a>
                                    <a class="btn orderSaveBtn none" data-id="{{$v->id}}">保存</a>

@@ -2,7 +2,7 @@
 
 @section('js')
   <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
-  <script src="/js/statistic/kpiTarget.js?v=1" type="text/javascript"></script>
+  <script src="/js/statistic/kpiTarget.js?v=22222" type="text/javascript"></script>
   <script src="/assets/plugins/jquery.form.js" type="text/javascript"></script>
 
 @endsection

@@ -31,6 +31,11 @@ $(function() {
 		        minView:2,
 		        language:  'zh-CN',
 			});
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/kpi-target/export','_blank');
+
+			});
 		},
 		events: function(){
 			$("body").delegate("#reStatistics","click",function(){

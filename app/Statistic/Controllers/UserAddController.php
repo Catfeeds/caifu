@@ -12,6 +12,7 @@ use App\Statistic\Models\AreaUser;
 use App\Statistic\Models\StatUsers;
 use App\Statistic\Models\UserRecommendLog;
 use App\Statistic\Models\Club;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserAddController extends Controller{
 
@@ -19,7 +20,7 @@ class UserAddController extends Controller{
 
 
 
-        $rows = StatUsers::getRows();
+            $rows = StatUsers::getRows();
         return view('/statistic/user-add/index',[
             'rows' => $rows,
             ]);
@@ -141,6 +142,61 @@ class UserAddController extends Controller{
 
         return Common::jsonResponse(0,'');
 
+    }
+
+
+    public function export(){
+        $rows = StatUsers::getRows();
+        $result[] = ['','用户数','推荐人数','合作社数','社员人数'];
+        $result[] = [
+            '昨日新增',
+            $rows['yesterday']['user_num'],
+            $rows['yesterday']['recommend_num'],
+            $rows['yesterday']['club_num'],
+            $rows['yesterday']['member_num']
+
+        ];
+        $result[] = [
+            '本周累计',
+            $rows['currentWeek']['user_num'],
+            $rows['currentWeek']['recommend_num'],
+            $rows['currentWeek']['club_num'],
+            $rows['currentWeek']['member_num']
+
+        ];
+        $result[] = [
+            '年度累计',
+            $rows['currentYear']['user_num'],
+            $rows['currentYear']['recommend_num'],
+            $rows['currentYear']['club_num'],
+            $rows['currentYear']['member_num']
+
+        ];
+        $result[] = [
+            '历史累计',
+            $rows['all']['user_num'],
+            $rows['all']['recommend_num'],
+            $rows['all']['club_num'],
+            $rows['all']['member_num']
+
+        ];
+
+        Excel::create('用户新增数据',function($excel) use ($result){
+
+            $excel->sheet('score', function($sheet) use ($result){
+                $sheet->setWidth(array(
+                    'A'     =>  14,
+                    'B'     =>  14,
+                    'C'     =>  14,
+                    'D'     =>  14,
+                    'E'     =>  14,
+
+                ));
+                $sheet->rows($result);
+
+            });
+
+        })->export('xls');
     }
 
 

@@ -24,7 +24,6 @@ class Order extends Model{
      */
     public static function getRows($where = [],$isPage = false,$pageSize = 20){
 
-//            $query = self::select('*');
         $query = DB::table('order_master as a')->select(
             'a.id','a.sn','a.trade_no','a.user_id','a.investment_amount','a.model_name',
             'a.begin_time','a.stop_time','a.offset_fees','a.status','a.months',

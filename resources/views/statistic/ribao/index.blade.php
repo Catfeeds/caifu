@@ -1,5 +1,5 @@
 @extends('statistic.layout.main') @section('js')
-<script src="/js/statistic/ribao.js" type="text/javascript"></script>
+<script src="/js/statistic/ribao.js?v=111" type="text/javascript"></script>
 @endsection @section('content')
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
@@ -25,8 +25,8 @@
 			<div class="content-block-content">
 				<div class="search-content">
 					<div class="btn-group">
-						<a class="btn default">导出Excel</a> <a class="btn default"
-							id="reStatistics">重新统计</a>
+						<a class="btn blue" id = 'exportBtn'>导出Excel</a>
+						<a class="btn blue" id="reStatistics">重新统计</a>
 					</div>
 				</div>
 			</div>

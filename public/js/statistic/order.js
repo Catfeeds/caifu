@@ -19,6 +19,11 @@ $(function() {
 		        minView:2,
 		        language:  'zh-CN',
 			});
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/order/export?'+$('#formId').serialize(),'_blank');
+
+			});
 			$('.order-edit-organize .name4').on('change',function(){
 				$('.order-edit-organize .name3').val('');
 				$('.order-edit-organize .name2').val('');

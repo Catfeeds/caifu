@@ -3,7 +3,7 @@
 		<span>筛选</span>
 	</div> -->
 	<div class="content-block-content">
-		<form action="" method='get'>
+		<form action="" method='get' id='formId'>
 
 		<div class="search-content">
 			<div class="search-content-left">
@@ -130,7 +130,7 @@
 			</div>
 			<div class="btn-group">
 				<input type='submit' class = 'btn green' value = "搜索">
-				<a class="btn blue">导出Excel</a> <a
+				<a class="btn blue" id = 'exportBtn'>导出Excel</a> <a
 					class="btn blue">导入Excel</a> <a class="btn default"
 					id="reStatistics">重新统计</a>
 			</div>

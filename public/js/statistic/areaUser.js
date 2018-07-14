@@ -41,7 +41,7 @@ $(function() {
 				}
 				//重新统计弹层提交按钮事件，展示提示信息
 				$("#reStatisticsPopup").addClass("none");
-				showAlert('数据正在重新统计中...');
+				showAlert('数据正在重新统计中...<br>24小时后统计结果才会刷新哦！');
 				$.ajax({
 					  type: 'POST',
 					  url: '/statistic/area-user/reset',
@@ -51,7 +51,7 @@ $(function() {
 					  },
 					  success: function(json){
 
-						  
+
 
 					  		if(json.errcode == 0){
 					  			showAlert('统计成功');
