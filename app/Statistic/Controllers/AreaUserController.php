@@ -54,6 +54,25 @@ class AreaUserController extends Controller{
 
     public function reset(Request $request){
 
+        set_time_limit(0);
+        ob_end_clean();
+        header("Connection: close");
+        header("HTTP/1.1 200 OK");
+        header("Content-Type: application/json;charset=utf-8");// 如果前端要的是json则添加，默认是返回的html/text
+        ob_start();
+        return Common::jsonResponse(0,'');// 输出结果到前端
+        $size = ob_get_length();
+        header("Content-Length: $size");
+        ob_end_flush();
+        flush();
+
+        if (function_exists("fastcgi_finish_request")) { // yii或yaf默认不会立即输出，加上此句即可（前提是用的fpm）
+            fastcgi_finish_request(); // 响应完成, 立即返回到前端,关闭连接
+        }
+        sleep(2);
+        ignore_user_abort(true);// 在关闭连接后，继续运行php脚本
+        set_time_limit(0);
+
         $time = $request->time;
         if(!$time){
             $time = strtotime("-1 day");
