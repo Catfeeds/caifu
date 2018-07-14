@@ -60,7 +60,7 @@ class AreaUserController extends Controller{
         header("HTTP/1.1 200 OK");
         header("Content-Type: application/json;charset=utf-8");// 如果前端要的是json则添加，默认是返回的html/text
         ob_start();
-        return Common::jsonResponse(0,'');// 输出结果到前端
+        echo Common::jsonResponse(0,'');// 输出结果到前端
         $size = ob_get_length();
         header("Content-Length: $size");
         ob_end_flush();
