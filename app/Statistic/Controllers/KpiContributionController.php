@@ -11,11 +11,177 @@ use Illuminate\Support\Facades\DB;
 use App\Statistic\Models\StatClub;
 use App\Statistic\Models\Organize;
 use App\Statistic\Models\OrganizeKpiTarget;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KpiContributionController extends Controller{
 
     public function index(Request $request){
 
+        $whereResult = $this->getWhere($request);
+        $where = $whereResult['where'];
+        $groupField = $whereResult['groupField'];
+        $gmvWhere = $whereResult['gmvWhere'];
+        $complete_begin = $whereResult['complete_begin'];
+        $complete_end = $whereResult['complete_end'];
+        $orderInfo = $whereResult['orderInfo'];
+        $organizeKpi = $whereResult['organizeKpi'];
+        $kpiGroupField = $whereResult['kpiGroupField'];
+        $beginTime = $whereResult['beginTime'];
+        $endTime = $whereResult['endTime'];
+        $chartTitle = $whereResult['chartTitle'];
+
+        $field = ['uuid','name4','name3','name2','name1','name'];
+        $request->flash();
+        $rows = Organize::getRowsKpiComplete($field,$where,$groupField,$gmvWhere);
+        $total = $rows->total();
+        if($complete_begin || $complete_end){
+            foreach ($rows as $k => $v){
+                if(isset($orderInfo[$v->$groupField]) && isset($organizeKpi[$v->$kpiGroupField])){
+                    $kpiCompletePercent = ($orderInfo[$v->$groupField]/$organizeKpi[$v->$kpiGroupField])*100;
+                    if($complete_begin && $kpiCompletePercent < $complete_begin){
+                        unset($rows[$k]);
+                    }else if($complete_end && $kpiCompletePercent > $complete_end){
+                        unset($rows[$k]);
+                    }
+
+                }else{
+                    unset($rows[$k]);
+                }
+
+            }
+            $total = count($rows);
+        }
+        $rows->appends($_REQUEST);
+
+        $chartkpiData = $this->getChartKpiData($orderInfo);
+
+        return view('/statistic/kpi-contribution/index',[
+            'rows' => $rows,
+            'total' => $total,
+            'currentPage' => $request->page?$request->page:1,
+            'groupField' => $groupField,
+            'beginTime' => $beginTime,
+            'endTime' => $endTime,
+            'orderInfo' => $orderInfo,
+            'organizeKpi' => $organizeKpi,
+            'kpiGroupField' => $kpiGroupField,
+            'chartkpiData' => $chartkpiData,
+            'chartTitle' => $chartTitle
+        ]);
+    }
+
+
+    public function export(Request $request){
+        $whereResult = $this->getWhere($request);
+        $where = $whereResult['where'];
+        $groupField = $whereResult['groupField'];
+        $gmvWhere = $whereResult['gmvWhere'];
+        $complete_begin = $whereResult['complete_begin'];
+        $complete_end = $whereResult['complete_end'];
+        $orderInfo = $whereResult['orderInfo'];
+        $organizeKpi = $whereResult['organizeKpi'];
+        $kpiGroupField = $whereResult['kpiGroupField'];
+        $beginTime = $whereResult['beginTime'];
+        $endTime = $whereResult['endTime'];
+        $chartTitle = $whereResult['chartTitle'];
+
+        $field = ['uuid','name4','name3','name2','name1','name'];
+        $rows = Organize::getRowsKpiComplete($field,$where,$groupField,$gmvWhere,false);
+        $rows = $rows->toArray();
+
+        $excelResult[] = [
+            '地区选择','','','','','',
+            'KPI贡献情况统计','','',''
+        ];
+        $excelResult[] = [
+            '序号','集团','大区','事业部','片区','项目',
+            '时间（年/月/日）','KPI（万元）','GMV（万元）','贡献率'
+        ];
+        foreach ($rows as $k => $v){
+            if(isset($orderInfo[$v[$groupField]]) && isset($organizeKpi[$v[$kpiGroupField]])){
+                $kpiCompletePercent = ($orderInfo[$v[$groupField]]/$organizeKpi[$v[$kpiGroupField]])*100;
+                if($complete_begin && $kpiCompletePercent < $complete_begin){
+                    continue;
+                }else if($complete_end && $kpiCompletePercent > $complete_end){
+                    continue;
+                }
+
+            }
+
+            $name2 = '';
+            $name1 = '';
+            $name = '';
+            $kpiData = '';
+            $gmvData = '';
+            $kpiPercent = '';
+            if(in_array($groupField,['name2','name1','name'])){
+                $name2 = $v['name2'];
+            }
+            if($groupField == 'name1' || $groupField == 'name'){
+                $name1 = $v['name1'];
+            }
+            if($groupField == 'name'){
+                $name = $v['name'];
+            }
+            if($request->unit == 'year'){
+                $date = date('Y',$beginTime);
+            }else if($request->unit == 'day') {
+                $date = date('Y-m',$beginTime) .'--'.date('Y-m',$endTime);
+            }else{
+                $searchEndTime = date('Y-m-01',$endTime);
+                $date = date('Y-m',$beginTime) .'--'. date('Y-m',strtotime("$searchEndTime -1 month"));//月末;
+
+            }
+            if(isset($organizeKpi[$v[$kpiGroupField]])){
+                $kpiData = sprintf("%.2f",$organizeKpi[$v[$kpiGroupField]],2);
+            }
+            if(isset($orderInfo[$v[$groupField]])){
+                $gmvData = $orderInfo[$v[$groupField]];
+            }
+            if(isset($orderInfo[$v[$groupField]]) && isset($organizeKpi[$v[$kpiGroupField]])){
+                if($organizeKpi[$v[$kpiGroupField]] == 0){
+                    $kpiPercent = sprintf("%.2f",$orderInfo[$v[$groupField]]*100,2).'%';
+                }else{
+                    $kpiPercent = sprintf("%.2f",($orderInfo[$v[$groupField]]/$organizeKpi[$v[$kpiGroupField]])*100,2).'%';
+                }
+            }
+            $excelResult[] = [
+                $k+1,$v['name4'],$v['name3'],$name2,$name1,$name,
+                $date,$kpiData,$gmvData,$kpiPercent
+            ];
+
+
+        }
+
+        Excel::create('地区KPI贡献率数据',function($excel) use ($excelResult){
+
+            $excel->sheet('score', function($sheet) use ($excelResult){
+                $sheet->mergeCells('A1:F1');
+                $sheet->mergeCells('G1:J1');
+                $sheet->setWidth(array(
+                    'A'     =>  14,
+                    'B'     =>  14,
+                    'C'     =>  14,
+                    'D'     =>  14,
+                    'E'     =>  14,
+                    'F'     =>  14,
+                    'G'     =>  14,
+                    'H'     =>  14,
+                    'I'     =>  14,
+                    'J'     =>  14,
+
+
+                ));
+                $sheet->rows($excelResult)->setFontSize(12);
+
+            });
+
+        })->export('xls');
+
+
+    }
+
+    private function getWhere($request){
         $where = [];
         $unit = $request->unit;//单位，日，月，年
         $beginTime = $request->begin_time;//开始时间
@@ -122,61 +288,21 @@ class KpiContributionController extends Controller{
         if($beginGmv || $endGmv){
             $gmvWhere = [$groupField,array_keys($orderInfo)];
         }
-        $field = ['uuid','name4','name3','name2','name1','name'];
-        $request->flash();
-        $rows = Organize::getRowsKpiComplete($field,$where,$groupField,$gmvWhere);
-        $total = $rows->total();
-        if($complete_begin || $complete_end){
-            foreach ($rows as $k => $v){
-                if(isset($orderInfo[$v->$groupField]) && isset($organizeKpi[$v->$kpiGroupField])){
-                    $kpiCompletePercent = ($orderInfo[$v->$groupField]/$organizeKpi[$v->$kpiGroupField])*100;
-                    if($complete_begin && $kpiCompletePercent < $complete_begin){
-                        unset($rows[$k]);
-                    }else if($complete_end && $kpiCompletePercent > $complete_end){
-                        unset($rows[$k]);
-                    }
-
-                }else{
-                    unset($rows[$k]);
-                }
-
-            }
-            $total = count($rows);
-        }
-        $rows->appends($_REQUEST);
-
-        $chartkpiData = $this->getChartKpiData($orderInfo);
-
-        return view('/statistic/kpi-contribution/index',[
-            'rows' => $rows,
-            'total' => $total,
-            'currentPage' => $request->page?$request->page:1,
-            'groupField' => $groupField,
-            'beginTime' => $beginTime,
-            'endTime' => $endTime,
+        return [
+            'kpiGroupField' => $kpiGroupField,
             'orderInfo' => $orderInfo,
             'organizeKpi' => $organizeKpi,
-            'kpiGroupField' => $kpiGroupField,
-            'chartkpiData' => $chartkpiData,
-            'chartTitle' => $chartTitle
-        ]);
+            'complete_begin' => $complete_begin,
+            'complete_end' => $complete_end,
+            'where' => $where,
+            'groupField' => $groupField,
+            'gmvWhere' => $gmvWhere,
+            'beginTime' => $beginTime,
+            'endTime' => $endTime,
+            'chartTitle' => $chartTitle,
+
+        ];
     }
-
-
-    public function reset(){
-
-
-
-        $result = StatClub::reset();
-        if($result){
-            return Common::jsonResponse(0,'');
-
-        }
-        return Common::jsonResponse(-1,'系统错误');
-
-    }
-
-
     private function getOrderList($where = '',$groupField = 'name3',$beginGmv = '',$endGmv = ''){
 
         $sql = "SELECT `a`.`name4`,`a`.`name3`,`a`.`name2`,`a`.`name1`,`a`.`name`,SUM(`b`.`investment_amount`) as `investment_amount` FROM `organize_xls` as a LEFT JOIN order_master as b on a.uuid = b.community_code where b.status not in (0,500,101) ". $where ." GROUP BY ".$groupField;

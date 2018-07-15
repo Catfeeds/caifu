@@ -1,6 +1,6 @@
 @extends('statistic.layout.main') @section('js')
 <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
-<script src="/js/statistic/areaUser.js?v=11" type="text/javascript"></script>
+<script src="/js/statistic/areaUser.js?v=2222" type="text/javascript"></script>
 @endsection @section('content')
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
@@ -31,7 +31,7 @@
 					class="table table-striped table-bordered table-advance table-hover">
 					<thead class="custom-thead">
 						<tr class="main-title">
-							<th colspan="6">地区</th>
+							<th colspan="5">地区</th>
 							<th colspan="10">用户信息</th>
 						</tr>
 						<tr>

@@ -11,10 +11,25 @@ use Illuminate\Support\Facades\DB;
 use App\Statistic\Models\AreaUser;
 use App\Statistic\Models\Organize;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AreaUserController extends Controller{
 
     public function index(Request $request){
+        $where = $this->getWhere($request);
+        $request->flash();
+
+        $field = ['o_group','large_area','department','area','project','owner_num','staff_num','investment_num','flushing_num','recast_num','referee_num','president_num'];
+        $rows = AreaUser::getRows($field,$where,true);
+        $rows->appends($_REQUEST);
+        $probabilityData = AreaUser::getLargeArea();
+        return view('/statistic/area-user/index',[
+            'rows' => $rows,
+            'flushing' => json_encode(isset($probabilityData['flushing'])?$probabilityData['flushing']:[],true),
+            'president' => json_encode(isset($probabilityData['president'])?$probabilityData['president']:[],true)
+            ]);
+    }
+    private function getWhere($request){
         $where = [];
         if($request->name){
             $where[] = ['o_group','=',trim($request->name4)];
@@ -38,19 +53,8 @@ class AreaUserController extends Controller{
 
             $where[] = ['large_area','=',trim($request->name3)];
         }
-        $request->flash();
-
-        $field = ['o_group','large_area','department','area','project','owner_num','staff_num','investment_num','flushing_num','recast_num','referee_num','president_num'];
-        $rows = AreaUser::getRows($field,$where,true);
-        $rows->appends($_REQUEST);
-        $probabilityData = AreaUser::getLargeArea();
-        return view('/statistic/area-user/index',[
-            'rows' => $rows,
-            'flushing' => json_encode(isset($probabilityData['flushing'])?$probabilityData['flushing']:[],true),
-            'president' => json_encode(isset($probabilityData['president'])?$probabilityData['president']:[],true)
-            ]);
+        return $where;
     }
-
 
     public function reset(Request $request){
 
@@ -145,7 +149,7 @@ class AreaUserController extends Controller{
 
     }
 
-    public function curlGet($ch,$url){
+    private function curlGet($ch,$url){
         // 2. 设置选项，包括URL
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0); //设置header
@@ -163,6 +167,80 @@ class AreaUserController extends Controller{
         }
         return json_decode($output,true);
 
+    }
+
+    public function export(Request $request){
+        $where = $this->getWhere($request);
+
+        $result[] = [
+            '地区','','','','',
+            '用户信息','','','','','','','','',''
+
+        ];
+        $result[] = [
+            '集团','大区','事业部','片区','项目',
+            '业主数','员工数','投资户数','冲抵户数','冲抵覆盖率','复投户数','复投率	','推荐人数','社长数','社长覆盖率'
+        ];
+        $field = ['o_group','large_area','department','area','project','owner_num','staff_num','investment_num','flushing_num','recast_num','referee_num','president_num'];
+        $rows = AreaUser::getRows($field,$where,false);
+        $rows = $rows->toArray();
+        if(!empty($rows)){
+            foreach ($rows as $v){
+                $flushingPercent = '';
+                $recastPercent = '';
+                $staffPercent = '';
+                if(!$v['owner_num']){
+                    $flushingPercent = (sprintf("%.2f",$v['flushing_num'])*100).'%';
+                }else if($v['flushing_num'] && $v['owner_num']){
+                    $flushingPercent = (sprintf("%.2f",$v['flushing_num']/$v['owner_num'])*100).'%';
+                }
+                if(!$v['investment_num']){
+                    $recastPercent = (sprintf("%.2f",$v['recast_num'])*100).'%';
+                }else if($v['recast_num'] && $v['investment_num']){
+                    $recastPercent = (sprintf("%.2f",$v['recast_num']/$v['investment_num'])*100).'%';
+                }
+                if(!$v['staff_num']){
+                    $staffPercent = (sprintf("%.2f",$v['president_num'])*100).'%';
+                }else if($v['president_num'] && $v['staff_num']){
+                    $staffPercent = (sprintf("%.2f",$v['president_num']/$v['staff_num'])*100).'%';
+                }
+                $result[] = [
+                    $v['o_group'],$v['large_area'],$v['department'],$v['area'],$v['project'],
+                    $v['owner_num'],$v['staff_num'],$v['investment_num'],$v['flushing_num'],$flushingPercent,
+                    $v['recast_num'],$recastPercent,$v['referee_num'],$v['president_num'],$staffPercent
+
+
+                ];
+            }
+        }
+        Excel::create('地区用户数据',function($excel) use ($result){
+
+            $excel->sheet('score', function($sheet) use ($result){
+                $sheet->mergeCells('A1:E1');
+                $sheet->mergeCells('F1:O1');
+                $sheet->setWidth(array(
+                    'A'     =>  14,
+                    'B'     =>  14,
+                    'C'     =>  14,
+                    'D'     =>  14,
+                    'E'     =>  14,
+                    'F'     =>  14,
+                    'G'     =>  14,
+                    'H'     =>  14,
+                    'I'     =>  14,
+                    'J'     =>  14,
+                    'K'     =>  14,
+                    'L'     =>  14,
+                    'M'     =>  14,
+                    'N'     =>  14,
+                    'O'     =>  14,
+
+                ));
+                $sheet->rows($result)->setFontSize(12);
+
+            });
+
+        })->export('xls');
     }
 
 

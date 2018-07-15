@@ -11,11 +11,173 @@ use Illuminate\Support\Facades\DB;
 use App\Statistic\Models\StatClub;
 use App\Statistic\Models\Organize;
 use App\Statistic\Models\OrganizeKpiTarget;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KpiCompleteController extends Controller{
 
     public function index(Request $request){
 
+        $result = $this->getList($request);
+        $where = $result['where'];
+        $groupField = $result['groupField'];
+        $gmvWhere = $result['gmvWhere'];
+        $complete_begin = $result['complete_begin'];
+        $complete_end = $result['complete_end'];
+        $organizeKpi = $result['organizeKpi'];
+        $orderInfo = $result['orderInfo'];
+        $chartGmvWhere = $result['chartGmvWhere'];
+        $kpiTargetList = $result['kpiTargetList'];
+        $beginTime = $result['beginTime'];
+        $endTime = $result['endTime'];
+        $chartTitle = $result['chartTitle'];
+        $field = ['uuid','name4','name3','name2','name1','name'];
+        $request->flash();
+
+        $rows = Organize::getRowsKpiComplete($field,$where,$groupField,$gmvWhere);
+        $total = $rows->total();
+        if($complete_begin || $complete_end){
+            foreach ($rows as $k => $v){
+                if(isset($orderInfo[$v->$groupField]) && isset($organizeKpi[$v->$groupField])){
+                    $kpiCompletePercent = ($orderInfo[$v->$groupField]/$organizeKpi[$v->$groupField])*100;
+                    if($complete_begin && $kpiCompletePercent < $complete_begin){
+                        unset($rows[$k]);
+                    }else if($complete_end && $kpiCompletePercent > $complete_end){
+                        unset($rows[$k]);
+                    }
+
+                }else{
+                    unset($rows[$k]);
+                }
+
+            }
+            $total = count($rows);
+        }
+        $rows->appends($_REQUEST);
+
+        $orderInfoToCharts = $this->getOrderByMonth($chartGmvWhere);
+        $chartkpiData = $this->getChartKpiData($kpiTargetList,$orderInfoToCharts);
+
+        return view('/statistic/kpi-complete/index',[
+            'rows' => $rows,
+            'total' => $total,
+            'currentPage' => $request->page?$request->page:1,
+            'groupField' => $groupField,
+            'beginTime' => $beginTime,
+            'endTime' => $endTime,
+            'orderInfo' => $orderInfo,
+            'organizeKpi' => $organizeKpi,
+            'chartkpiData' => $chartkpiData,
+            'chartTitle' => $chartTitle
+        ]);
+    }
+
+
+    public function export(Request $request){
+        $result = $this->getList($request);
+        $where = $result['where'];
+        $groupField = $result['groupField'];
+        $gmvWhere = $result['gmvWhere'];
+        $complete_begin = $result['complete_begin'];
+        $complete_end = $result['complete_end'];
+        $organizeKpi = $result['organizeKpi'];
+        $orderInfo = $result['orderInfo'];
+        $chartGmvWhere = $result['chartGmvWhere'];
+        $kpiTargetList = $result['kpiTargetList'];
+        $beginTime = $result['beginTime'];
+        $endTime = $result['endTime'];
+        $chartTitle = $result['chartTitle'];
+        $field = ['uuid','name4','name3','name2','name1','name'];
+        $rows = Organize::getRowsKpiComplete($field,$where,$groupField,$gmvWhere,false);
+        $rows = $rows->toArray();
+
+        $excelResult[] = [
+            '地区选择','','','','','',
+            'KPI完成情况统计','','',''
+        ];
+        $excelResult[] = [
+            '序号','集团','大区','事业部','片区','项目',
+            '时间（年/月/日）','KPI（万元）','GMV（万元）','完成率'
+        ];
+        foreach ($rows as $k => $v){
+                if(isset($orderInfo[$v[$groupField]]) && isset($organizeKpi[$v[$groupField]])){
+                    $kpiCompletePercent = ($orderInfo[$v[$groupField]]/$organizeKpi[$v[$groupField]])*100;
+                    if($complete_begin && $kpiCompletePercent < $complete_begin){
+                        continue;
+                    }else if($complete_end && $kpiCompletePercent > $complete_end){
+                        continue;
+                    }
+                }
+                    $name2 = '';
+                    $name1 = '';
+                    $name = '';
+                    $kpiData = '';
+                    $gmvData = '';
+                    $kpiPercent = '';
+                    if(in_array($groupField,['name2','name1','name'])){
+                        $name2 = $v['name2'];
+                    }
+                    if($groupField == 'name1' || $groupField == 'name'){
+                        $name1 = $v['name1'];
+                    }
+                    if($groupField == 'name'){
+                        $name = $v['name'];
+                    }
+                    if($request->unit == 'year'){
+                        $date = date('Y',$beginTime);
+                    }else if($request->unit == 'day') {
+                        $date = date('Y-m',$beginTime) .'--'.date('Y-m',$endTime);
+                    }else{
+                        $searchEndTime = date('Y-m-01',$endTime);
+                        $date = date('Y-m',$beginTime) .'--'. date('Y-m',strtotime("$searchEndTime -1 month"));//月末;
+
+                    }
+                    if(isset($organizeKpi[$v[$groupField]])){
+                        $kpiData = $organizeKpi[$v[$groupField]];
+                    }
+                    if(isset($orderInfo[$v[$groupField]])){
+                        $gmvData = $orderInfo[$v[$groupField]];
+                    }
+                    if(isset($orderInfo[$v[$groupField]]) && isset($organizeKpi[$v[$groupField]])){
+                        if($organizeKpi[$v[$groupField]] == 0){
+                            $kpiPercent = sprintf("%.2f",$orderInfo[$v[$groupField]]*100,2).'%';
+                        }else{
+                            $kpiPercent = sprintf("%.2f",($orderInfo[$v[$groupField]]/$organizeKpi[$v[$groupField]])*100,2).'%';
+                        }
+                    }
+                    $excelResult[] = [
+                      $k+1,$v['name4'],$v['name3'],$name2,$name1,$name,
+                        $date,$kpiData,$gmvData,$kpiPercent
+                   ];
+
+            }
+            Excel::create('KPI完成情况数据',function($excel) use ($excelResult){
+
+                $excel->sheet('score', function($sheet) use ($excelResult){
+                $sheet->mergeCells('A1:F1');
+                $sheet->mergeCells('G1:J1');
+                $sheet->setWidth(array(
+                    'A'     =>  14,
+                    'B'     =>  14,
+                    'C'     =>  14,
+                    'D'     =>  14,
+                    'E'     =>  14,
+                    'F'     =>  14,
+                    'G'     =>  14,
+                    'H'     =>  14,
+                    'I'     =>  14,
+                    'J'     =>  14,
+
+
+                ));
+                $sheet->rows($excelResult)->setFontSize(12);
+
+            });
+
+        })->export('xls');
+
+    }
+
+    private function getList($request){
         $where = [];
         $unit = $request->unit;//单位，日，月，年
         $beginTime = $request->begin_time;//开始时间
@@ -127,60 +289,22 @@ class KpiCompleteController extends Controller{
         if($beginGmv || $endGmv){
             $gmvWhere = [$groupField,array_keys($orderInfo)];
         }
-        $field = ['uuid','name4','name3','name2','name1','name'];
-        $request->flash();
-        $rows = Organize::getRowsKpiComplete($field,$where,$groupField,$gmvWhere);
-        $total = $rows->total();
-        if($complete_begin || $complete_end){
-            foreach ($rows as $k => $v){
-                if(isset($orderInfo[$v->$groupField]) && isset($organizeKpi[$v->$groupField])){
-                    $kpiCompletePercent = ($orderInfo[$v->$groupField]/$organizeKpi[$v->$groupField])*100;
-                    if($complete_begin && $kpiCompletePercent < $complete_begin){
-                        unset($rows[$k]);
-                    }else if($complete_end && $kpiCompletePercent > $complete_end){
-                        unset($rows[$k]);
-                    }
-
-                }else{
-                    unset($rows[$k]);
-                }
-
-            }
-            $total = count($rows);
-        }
-        $rows->appends($_REQUEST);
-
-        $orderInfoToCharts = $this->getOrderByMonth($chartGmvWhere);
-        $chartkpiData = $this->getChartKpiData($kpiTargetList,$orderInfoToCharts);
-
-        return view('/statistic/kpi-complete/index',[
-            'rows' => $rows,
-            'total' => $total,
-            'currentPage' => $request->page?$request->page:1,
+        return [
+            'where' => $where,
             'groupField' => $groupField,
+            'gmvWhere' => $gmvWhere,
+            'complete_begin' => $complete_begin,
+            'complete_end' => $complete_end,
+            'organizeKpi' => $organizeKpi,
+            'orderInfo' => $orderInfo,
+            'chartGmvWhere' => $chartGmvWhere,
+            'kpiTargetList' => $kpiTargetList,
             'beginTime' => $beginTime,
             'endTime' => $endTime,
-            'orderInfo' => $orderInfo,
-            'organizeKpi' => $organizeKpi,
-            'chartkpiData' => $chartkpiData,
             'chartTitle' => $chartTitle
-        ]);
-    }
-
-
-    public function reset(){
-
-
-
-        $result = StatClub::reset();
-        if($result){
-            return Common::jsonResponse(0,'');
-
-        }
-        return Common::jsonResponse(-1,'系统错误');
+        ];
 
     }
-
 
     private function getOrderList($where = '',$groupField = 'name3',$beginGmv = '',$endGmv = ''){
 
@@ -214,7 +338,12 @@ class KpiCompleteController extends Controller{
 
         $row = [];
         $month = date('m',$beginTime);
+//         echo $month;
+//         echo $unit;
+//         echo '<pre>';
 
+//         var_export($data);
+//         echo '</pre>';exit();
         if($unit == 'day'){
             $beginDay = date('d',$beginTime);
             $endDay = date('d',$endTime - 86400);
@@ -240,7 +369,8 @@ class KpiCompleteController extends Controller{
                 }
             }
         }else{
-            $endMonth = date('m',$endTime);
+            $searchEndTime = date('Y-m-01',$endTime);
+            $endMonth = date('m',strtotime("$searchEndTime -1 month"));
             if(!empty($data)){
                 foreach ($data as $v){
                     if (!isset($row[$v[$groupField]])){
@@ -251,7 +381,6 @@ class KpiCompleteController extends Controller{
                         if($i < 10){
                             $monthKey = '0'.$i;
                         }
-
                         $row[$v[$groupField]] += $v['month'.$monthKey];
                     }
                 }

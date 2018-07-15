@@ -78,6 +78,11 @@ $(function() {
 				}
 
 			});
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/kpi-contribution/export?'+$('#queryForm').serialize(),'_blank');
+
+			});
 		},
 		events: function(){
 			$("body").delegate("#submitForm","click",function(){

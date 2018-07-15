@@ -14,6 +14,11 @@ $(function() {
 		        minView:2,
 		        language:  'zh-CN'
 			});
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/cooperative/export?'+$('#formId').serialize(),'_blank');
+
+			});
 			// 初始化分页组件
 			initPagination("#HzsPagination", 100, 20, 1);
 		},

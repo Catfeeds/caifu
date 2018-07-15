@@ -1,6 +1,6 @@
 @extends('statistic.layout.main') @section('js')
 <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
-<script src="/js/statistic/userCooperative.js" type="text/javascript"></script>
+<script src="/js/statistic/userCooperative.js?v=11111" type="text/javascript"></script>
 @endsection @section('content')
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">
@@ -31,7 +31,7 @@
 					class="table table-striped table-bordered table-advance table-hover">
 					<thead class="custom-thead">
 						<tr class="main-title">
-							<th colspan="11">用户信息</th>
+							<th colspan="10">用户信息</th>
 							<th colspan="5">所属地区架构</th>
 						</tr>
 						<tr>
@@ -60,7 +60,7 @@
 							<td>{{$v->username}}</td>
 							<td>{{App\Statistic\Models\Common::getSex($v->idcard_number)}}</td>
 							<td>{{App\Statistic\Models\Common::getAge($v->idcard_number)}}</td>
-							<td>{{date('Y-m-d H:i',$v->created_at)}}</td>
+							<td>{{$v->created_at?date('Y-m-d H:i',$v->created_at):''}}</td>
 							<td>
 								@if($v->club_user_id == $v->user_id)
     							社长
@@ -80,8 +80,8 @@
 								{{$v->club_name}}
 							</td>
 							<td>{{$v->o_group}}</td>
-							<td>{{$v->department}}</td>
 							<td>{{$v->large_area}}</td>
+							<td>{{$v->department}}</td>
 							<td>{{$v->area}}</td>
 							<td>{{$v->project}}</td>
 						</tr>

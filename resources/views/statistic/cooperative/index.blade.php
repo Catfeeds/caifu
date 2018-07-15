@@ -1,6 +1,6 @@
 @extends('statistic.layout.main') @section('js')
 <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
-<script src="/js/statistic/cooperative.js" type="text/javascript"></script>
+<script src="/js/statistic/cooperative.js?v=1111" type="text/javascript"></script>
 
 @endsection @section('content')
 <!-- Tab -->

@@ -45,13 +45,32 @@ $(function() {
 			//订单日期
 			$("body").delegate("#kpiCompletion-dateTime2","change",function(){
 				var thetime=$(this).val();
-				var dateType = $("#dateType").val();
 				var start=$("#kpiCompletion-dateTime1").val();
 				if(start == ''){
 					alertErrorMsg("请选择开始日期！");
 					$(this).val("");
 					return;
 				}
+				H.kpiCompletion.checkOrderDate($(this),start,thetime);
+			});
+						//订单日期
+			$("body").delegate("#kpiCompletion-dateTime1","change",function(){
+				var start=$(this).val();
+				var thetime=$("#kpiCompletion-dateTime2").val();
+				if(!thetime){
+					return;
+				}
+				H.kpiCompletion.checkOrderDate($(this),start,thetime);
+			});
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/kpi-complete/export?'+$('#queryForm').serialize(),'_blank');
+
+			});
+		},
+		checkOrderDate : function(dateId,start,thetime){
+			var dateType = $("#dateType").val();
+			
 				var curDate=new Date();
 				//日
 				if(dateType == 'day'){
@@ -60,14 +79,14 @@ $(function() {
 					if(d >= curDate)
 					{
 						alertErrorMsg("请选择小于今天的时间！");
-						$(this).val("");
+						dateId.val("");
 						return;
 					}
 					start=start.substr(5,2);
 					thetime=thetime.substr(5,2)
 					if(start != thetime){
 						alertErrorMsg("查询日期范围不能跨月！");
-						$(this).val("");
+						dateId.val("");
 						return;
 					}
 				}
@@ -76,7 +95,7 @@ $(function() {
 					var d=new Date(Date.parse(thetime.replace(/-/g,"/")+'/01'));
 					if(d.getFullYear() == curDate.getFullYear() && d.getMonth() > curDate.getMonth()){
 						alertErrorMsg("请选择小于等于本月的日期！");
-						$(this).val("");
+						dateId.val("");
 						return;
 					};
 					start=start.replace(/-/g,"/")+'/01';
@@ -84,7 +103,7 @@ $(function() {
 			        var intervalYear =  d.getFullYear() - startdate.getFullYear();
 			        if(intervalYear != 0){
 						alertErrorMsg("查询日期范围不能跨年！");
-						$(this).val("");
+						dateId.val("");
 						return;
 					}
 					
@@ -95,16 +114,15 @@ $(function() {
 					var intervalYear =  thetime - start;
 					if(d.getFullYear() > curDate.getFullYear()){
 						alertErrorMsg("请选择小于等于今年的日期！");
-						$(this).val("");
+						dateId.val("");
 						return;
 					};
 					if(intervalYear != 0){
 						alertErrorMsg("查询日期范围不能跨年！");
-						$(this).val("");
+						dateId.val("");
 						return;
 					}
-				}
-			});
+				}	
 		},
 		events: function(){
 			$("body").delegate("#submitForm","click",function(){

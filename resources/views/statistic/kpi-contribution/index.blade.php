@@ -1,7 +1,7 @@
 @extends('statistic.layout.main')
 @section('js')
 <script src="/js/statistic/citySearch.js" type="text/javascript"></script>
-<script src="/js/statistic/kpiContribution.js?v=2" type="text/javascript"></script>
+<script src="/js/statistic/kpiContribution.js?v=11111" type="text/javascript"></script>
 @endsection
 @section('content')
 <!-- Tab -->
@@ -84,7 +84,7 @@
 							<td>
 							@isset($organizeKpi[$v->$kpiGroupField])
 
-							{{$organizeKpi[$v->$kpiGroupField]}}
+							{{sprintf("%.2f",$organizeKpi[$v->$kpiGroupField],2)}}
 							@endisset
 							</td>
 							<td>

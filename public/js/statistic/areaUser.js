@@ -19,6 +19,11 @@ $(function() {
 		        minView:2,
 		        language:  'zh-CN',
 			});
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/area-user/export?'+$('#formId').serialize(),'_blank');
+
+			});
 			// 初始化分页组件
 			initPagination("#DqyhPagination", 100, 20, 1);
 			// 绘制地区用户页面图表

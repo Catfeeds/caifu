@@ -21,6 +21,11 @@ $(function() {
 		        minView:2,
 		        language:  'zh-CN',
 			});
+			$('#exportBtn').on('click',function(e){
+				e.preventDefault();
+				window.open('/statistic/user-cooperative/export?'+$('#formId').serialize(),'_blank');
+
+			});
 
 		},
 		events: function(){

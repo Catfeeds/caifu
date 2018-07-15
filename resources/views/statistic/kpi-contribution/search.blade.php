@@ -77,7 +77,8 @@
 
 				<div class="btn-group">
 					<a class="btn green" id="submitForm">搜索</a>
-					<a class="btn blue">导出Excel</a> <a class="btn blue">导入Excel</a>
+					<a class="btn blue" id ='exportBtn'>导出Excel</a>
+					 <a class="btn blue">导入Excel</a>
 				</div>
 			</div>
 		</form>

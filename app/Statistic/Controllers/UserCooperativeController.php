@@ -7,11 +7,24 @@ use App\Statistic\Models\Order;
 use App\Statistic\Models\UserMaster;
 use Illuminate\Support\Facades\DB;
 use App\Statistic\Models\Common;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserCooperativeController extends Controller{
 
     public function index(Request $request){
 //         $request = request()->all();
+        $where = $this->getWhere($request);
+        $request->flash();
+        $rows = UserMaster::getRows($where,true,20);
+        $rows->appends($_REQUEST);
+
+
+        return view('/statistic/user-cooperative/index',[
+            'rows' => $rows,
+
+        ]);
+    }
+    private function getWhere($request){
         $where = [];
         if($request->user_id){
             $where[] = ['user_id','=',trim($request->user_id)];
@@ -64,15 +77,7 @@ class UserCooperativeController extends Controller{
         }else if($request->name3){
             $where[] = ['large_area','=',trim($request->name3)];
         }
-        $request->flash();
-        $rows = UserMaster::getRows($where,true,20);
-        $rows->appends($_REQUEST);
-
-
-        return view('/statistic/user-cooperative/index',[
-            'rows' => $rows,
-
-        ]);
+        return $where;
     }
     /**
      * @desc 重新统计
@@ -136,5 +141,66 @@ class UserCooperativeController extends Controller{
         }
         DB::commit();
         return Common::jsonResponse(0,'');
+    }
+
+
+    public function export(Request $request){
+        $where = $this->getWhere($request);
+        $rows = UserMaster::getRows($where,false);
+        $rows = $rows->toArray();
+        $result[] = [
+            '用户信息','','','','','','','','','',
+            '所属地区架构','','','',''
+        ];
+        $result[] = [
+            '用户ID','用户手机号','用户姓名','性别','年龄','注册时间','社员/社长','入社时间','合作社ID','所属合作社',
+            '集团','大区','事业部','片区','项目'
+
+        ];
+        if(!empty($rows)){
+            foreach ($rows as $v){
+                if($v->club_user_id == $v->user_id){
+                    $role = '社长';
+                }else{
+                    $role = '社员';
+                }
+                $result[] = [
+                    $v->user_id,' '.$v->mobile,$v->username,Common::getSex($v->idcard_number),Common::getAge($v->idcard_number),
+                    $v->created_at?date('Y-m-d H:i',$v->created_at):'',$role,
+                    $v->join_club_time?date('Y-m-d H:i',$v->join_club_time):'',
+                    $v->club_id?$v->club_id:'',$v->club_name,
+                    $v->o_group,$v->large_area,$v->department,$v->area,$v->project
+
+                ];
+            }
+        }
+        Excel::create('用户合作社数据',function($excel) use ($result){
+
+            $excel->sheet('score', function($sheet) use ($result){
+                $sheet->mergeCells('A1:J1');
+                $sheet->mergeCells('K1:O1');
+                $sheet->setWidth(array(
+                    'A'     =>  14,
+                    'B'     =>  14,
+                    'C'     =>  14,
+                    'D'     =>  14,
+                    'E'     =>  14,
+                    'F'     =>  14,
+                    'G'     =>  14,
+                    'H'     =>  14,
+                    'I'     =>  14,
+                    'J'     =>  14,
+                    'K'     =>  14,
+                    'L'     =>  14,
+                    'M'     =>  14,
+                    'N'     =>  14,
+                    'O'     =>  14,
+
+                ));
+                $sheet->rows($result)->setFontSize(12);
+
+            });
+
+        })->export('xls');
     }
 }

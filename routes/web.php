@@ -35,11 +35,14 @@ Route::group(['prefix' => '/statistic/order'], function() {
     Route::get('/export','\App\Statistic\Controllers\OrderController@export');
 
 });
+//用户合作社
+Route::group(['prefix' => '/statistic/user-cooperative'], function() {
 
+    Route::any('/index','\App\Statistic\Controllers\UserCooperativeController@index');
+    Route::any('/reset','\App\Statistic\Controllers\UserCooperativeController@reset');
+    Route::get('/export','\App\Statistic\Controllers\UserCooperativeController@export');
 
-Route::any('/statistic/user-cooperative/index','\App\Statistic\Controllers\UserCooperativeController@index');
-
-Route::any('/statistic/user-cooperative/reset','\App\Statistic\Controllers\UserCooperativeController@reset');
+});
 
 Route::group(['prefix' => '/statistic/ribao'], function() {
 
@@ -50,10 +53,13 @@ Route::group(['prefix' => '/statistic/ribao'], function() {
 
 Route::post('/statistic/api/get-stat-daily','\App\Statistic\Controllers\ApiController@getStatDaily');
 
+Route::group(['prefix' => '/statistic/area-user'], function() {
 
-Route::get('/statistic/area-user/index','\App\Statistic\Controllers\AreaUserController@index');
-Route::any('/statistic/area-user/reset','\App\Statistic\Controllers\AreaUserController@reset');
+    Route::get('/index','\App\Statistic\Controllers\AreaUserController@index');
+    Route::any('/reset','\App\Statistic\Controllers\AreaUserController@reset');
+    Route::get('/export','\App\Statistic\Controllers\AreaUserController@export');
 
+});
 Route::group(['prefix' => '/statistic/user-add'], function() {
     Route::get('/index','\App\Statistic\Controllers\UserAddController@index');
     Route::post('/search','\App\Statistic\Controllers\UserAddController@searchUserChart');
@@ -65,9 +71,18 @@ Route::group(['prefix' => '/statistic/user-add'], function() {
 Route::group(['prefix' => '/statistic/cooperative'], function() {
     Route::get('/index','\App\Statistic\Controllers\CooperativeController@index');
     Route::get('/reset','\App\Statistic\Controllers\CooperativeController@reset');
+    Route::get('/export','\App\Statistic\Controllers\CooperativeController@export');
+
 });
 
+Route::group(['prefix' => '/statistic/kpi-complete'], function() {
 
-    Route::get('/statistic/kpi-complete/index','\App\Statistic\Controllers\KpiCompleteController@index');
-    Route::get('/statistic/kpi-contribution/index','\App\Statistic\Controllers\KpiContributionController@index');
+    Route::get('/index','\App\Statistic\Controllers\KpiCompleteController@index');
+    Route::get('/export','\App\Statistic\Controllers\KpiCompleteController@export');
 
+});
+Route::group(['prefix' => '/statistic/kpi-contribution'], function() {
+    Route::get('/index','\App\Statistic\Controllers\KpiContributionController@index');
+
+    Route::get('/export','\App\Statistic\Controllers\KpiContributionController@export');
+});
