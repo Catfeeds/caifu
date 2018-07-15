@@ -13,7 +13,12 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'App\Console\Commands\Ribao'
+        'App\Console\Commands\Ribao',
+        'App\Console\Commands\Cooperative',
+        'App\Console\Commands\UserAdd',
+//         'App\Console\Commands\Ribao'
+
+
         //
     ];
 

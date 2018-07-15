@@ -79,7 +79,6 @@ class UserAddController extends Controller{
 
 
     public function reset(Request $request){
-
         $time = $request->time;
         if($time){
 
@@ -88,49 +87,10 @@ class UserAddController extends Controller{
                 return Common::jsonResponse(-1,'统计时间不能大于当前时间');
             }
 
+        }else{
+            return Common::jsonResponse(-1,'请选择统计时间');
         }
-        $endTime = strtotime(date('Y-m-d',time()));
-        $recommendData = UserRecommendLog::getRecommendData($time,$endTime);//每天的推荐人数
-        $userAddData = Order::getUserAdd($time,$endTime);//新增用户
-        $clubUserData = ClubJoin::getClubData($time,$endTime);
-        $recommendMinDate = key($recommendData);//最小时间
-        $userAddDataMinDate = key($userAddData);
-        $clubUserDataMinDate = key($clubUserData);
-        if(!$time){
-            $minTimeArray = [$userAddDataMinDate,$recommendMinDate,$clubUserDataMinDate];
-            sort($minTimeArray);
-            $time = strtotime($minTimeArray[0]);
-        }
-        $insertData = [];
-        for ($i = $time;$i < $endTime;){
-            $key = date('Y-m-d',$i);
-            $insertData[$i]['date'] = $i;
-            $insertData[$i]['user_num'] = 0;
-            $insertData[$i]['recommend_num'] = 0;
-            $insertData[$i]['club_num'] = 0;
-            $insertData[$i]['member_num'] = 0;
-            $insertData[$i]['created_at'] = time();
-
-            if(isset($userAddData[$key])){
-                $insertData[$i]['user_num'] += $userAddData[$key];
-
-            }
-            if(isset($recommendData[$key])){
-
-                $insertData[$i]['recommend_num'] += $recommendData[$key];
-
-
-            }
-            if(isset($clubUserData[$key])){
-                $insertData[$i]['club_num'] = $clubUserData[$key]['master'];
-                $insertData[$i]['member_num'] = $clubUserData[$key]['staff'];
-            }
-
-
-
-
-            $i += 86400;
-        }
+        $insertData = $this->getInsertData($time);
         DB::beginTransaction();
         DB::table('stat_users')->delete();
         if(!empty($insertData)){
@@ -142,6 +102,18 @@ class UserAddController extends Controller{
 
         return Common::jsonResponse(0,'');
 
+    }
+    public function addLastDay($time){
+
+        $insertData = $this->getInsertData($time);
+        DB::beginTransaction();
+        if(!empty($insertData)){
+            $insertData = array_values($insertData);
+            $result = DB::table('stat_users')->insert($insertData);
+
+        }
+        DB::commit();
+        return Common::jsonResponse(0,'');
     }
 
 
@@ -199,5 +171,52 @@ class UserAddController extends Controller{
         })->export('xls');
     }
 
+
+    private function getInsertData($time){
+
+        $endTime = strtotime(date('Y-m-d',time()));
+        $recommendData = UserRecommendLog::getRecommendData($time,$endTime);//每天的推荐人数
+        $userAddData = Order::getUserAdd($time,$endTime);//新增用户
+        $clubUserData = ClubJoin::getClubData($time,$endTime);
+        $recommendMinDate = key($recommendData);//最小时间
+        $userAddDataMinDate = key($userAddData);
+        $clubUserDataMinDate = key($clubUserData);
+        if(!$time){
+            $minTimeArray = [$userAddDataMinDate,$recommendMinDate,$clubUserDataMinDate];
+            sort($minTimeArray);
+            $time = strtotime($minTimeArray[0]);
+        }
+        $insertData = [];
+        for ($i = $time;$i < $endTime;){
+            $key = date('Y-m-d',$i);
+            $insertData[$i]['date'] = $i;
+            $insertData[$i]['user_num'] = 0;
+            $insertData[$i]['recommend_num'] = 0;
+            $insertData[$i]['club_num'] = 0;
+            $insertData[$i]['member_num'] = 0;
+            $insertData[$i]['created_at'] = time();
+
+            if(isset($userAddData[$key])){
+                $insertData[$i]['user_num'] += $userAddData[$key];
+
+            }
+            if(isset($recommendData[$key])){
+
+                $insertData[$i]['recommend_num'] += $recommendData[$key];
+
+
+            }
+            if(isset($clubUserData[$key])){
+                $insertData[$i]['club_num'] = $clubUserData[$key]['master'];
+                $insertData[$i]['member_num'] = $clubUserData[$key]['staff'];
+            }
+
+
+
+
+            $i += 86400;
+        }
+        return $insertData;
+    }
 
 }
