@@ -1,5 +1,5 @@
 @extends('statistic.layout.main') @section('js')
-<script src="/js/statistic/ribao.js?v=111" type="text/javascript"></script>
+<script src="/js/statistic/ribao.js?v=222222" type="text/javascript"></script>
 @endsection @section('content')
 <!-- Tab -->
 <ul id="pageTab" class="nav nav-tabs">

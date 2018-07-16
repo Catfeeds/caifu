@@ -33,7 +33,7 @@ $(function() {
 			});
 			$('#exportBtn').on('click',function(e){
 				e.preventDefault();
-				window.open('/statistic/kpi-target/export','_blank');
+				window.open('/statistic/ribao/export','_blank');
 
 			});
 		},
