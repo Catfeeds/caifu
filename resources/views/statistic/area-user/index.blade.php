@@ -65,9 +65,7 @@
 							<td>{{$v->investment_num}}</td>
 							<td>{{$v->flushing_num}}</td>
 							<td>
-								@if(!$v->owner_num)
-								{{(sprintf("%.2f",$v->flushing_num)*100).'%'}}
-								@elseif($v->flushing_num && $v->owner_num)
+								@if($v->flushing_num && $v->owner_num)
 
 								{{(sprintf("%.2f",$v->flushing_num/$v->owner_num)*100).'%'}}
 
@@ -87,9 +85,7 @@
 							<td>{{$v->referee_num}}</td>
 							<td>{{$v->president_num}}</td>
 							<td>
-								@if(!$v->staff_num)
-								{{(sprintf("%.2f",$v->president_num)*100).'%'}}
-								@elseif($v->president_num && $v->staff_num)
+								@if($v->president_num && $v->staff_num)
 
 								{{(sprintf("%.2f",$v->president_num/$v->staff_num)*100).'%'}}
 
