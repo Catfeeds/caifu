@@ -64,7 +64,7 @@
 							<td>
 								@if($v->club_user_id == $v->user_id)
     							社长
-    							@elseif($v->user_id)
+    							@elseif($v->club_user_id)
     							社员
     							@else
 								非社员
